@@ -278,7 +278,7 @@ a { color: inherit; text-decoration: none; }
   z-index: 1;
   display: flex;
   justify-content: flex-end;
-  padding-right: 20px;
+  padding-right: 0;
 }
 
 .terminal-card {
@@ -289,6 +289,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 32px 80px #00000060, 0 0 0 1px #a07cf510;
   width: 100%;
   max-width: 480px;
+  margin-right: -24px;
 }
 
 .terminal-bar {
