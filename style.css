@@ -139,9 +139,9 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   top: auto;
   bottom: 150px;
-  left: 46px;
+  left: 55%;
   right: auto;
-  transform: none;
+  transform: translateX(-50%);
   width: 360px;
   z-index: 2;
   opacity: 0;
