@@ -139,7 +139,7 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   top: auto;
   bottom: 160px;
-  left: 56px;
+  left: 0px;
   right: auto;
   transform: none;
   width: 360px;
