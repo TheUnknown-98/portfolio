@@ -29,26 +29,28 @@
   <section id="hero">
     <canvas id="hero-canvas"></canvas>
 
-    <div class="hero-inner">
+    <!-- Left: text -->
+    <div class="hero-left">
       <p class="hero-tag"><span id="typewriter"></span><span class="cursor-blink">|</span></p>
-      <h1 class="hero-name reveal">
+      <h1 class="hero-name">
         <span class="name-the">The</span>
         <span class="name-unknown">Unknown</span>
       </h1>
       <p class="hero-bio reveal">
-        Building things from scratch — algorithms, interfaces,<br>and everything in between.
+        Building things from scratch — algorithms,<br>interfaces, and everything in between.
       </p>
       <div class="hero-actions reveal">
         <a href="#projects" class="btn-primary">
-          <span>View Projects</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          View Projects
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
         <a href="https://github.com/TheUnknown-98" target="_blank" class="btn-ghost">GitHub ↗</a>
       </div>
     </div>
 
-    <div class="hero-right reveal-slow">
-      <div class="terminal-card">
+    <!-- Right: terminal -->
+    <div class="hero-right">
+      <div class="terminal-card reveal-slow">
         <div class="terminal-bar">
           <span class="t-dot t-red"></span>
           <span class="t-dot t-yellow"></span>
@@ -56,13 +58,13 @@
           <span class="t-title">portfolio.js</span>
         </div>
         <div class="terminal-body">
-          <div class="t-line"><span class="t-kw">const</span> <span class="t-var">dev</span> <span class="t-op">=</span> <span class="t-str">{</span></div>
-          <div class="t-line t-indent"><span class="t-prop">name</span><span class="t-op">:</span> <span class="t-str">"TheUnknown"</span><span class="t-op">,</span></div>
-          <div class="t-line t-indent"><span class="t-prop">focus</span><span class="t-op">:</span> <span class="t-str">"Full-Stack"</span><span class="t-op">,</span></div>
-          <div class="t-line t-indent"><span class="t-prop">stack</span><span class="t-op">:</span> <span class="t-str">["JS", "React", "Python"]</span><span class="t-op">,</span></div>
-          <div class="t-line t-indent"><span class="t-prop">projects</span><span class="t-op">:</span> <span class="t-num">1</span><span class="t-op">,</span></div>
-          <div class="t-line t-indent"><span class="t-prop">building</span><span class="t-op">:</span> <span class="t-bool">true</span></div>
-          <div class="t-line"><span class="t-str">}</span></div>
+          <div class="t-line"><span class="t-kw">const</span> <span class="t-var">dev</span> <span class="t-op">=</span> <span class="t-br">{</span></div>
+          <div class="t-line t-in"><span class="t-prop">name</span><span class="t-op">:</span> <span class="t-str">"TheUnknown"</span><span class="t-op">,</span></div>
+          <div class="t-line t-in"><span class="t-prop">focus</span><span class="t-op">:</span> <span class="t-str">"Full-Stack"</span><span class="t-op">,</span></div>
+          <div class="t-line t-in"><span class="t-prop">stack</span><span class="t-op">:</span> <span class="t-str">["JS", "React", "Python"]</span><span class="t-op">,</span></div>
+          <div class="t-line t-in"><span class="t-prop">projects</span><span class="t-op">:</span> <span class="t-num">1</span><span class="t-op">,</span></div>
+          <div class="t-line t-in"><span class="t-prop">building</span><span class="t-op">:</span> <span class="t-bool">true</span></div>
+          <div class="t-line"><span class="t-br">}</span></div>
           <div class="t-line t-gap"></div>
           <div class="t-line"><span class="t-comment">// always learning, always shipping</span></div>
         </div>
@@ -79,7 +81,7 @@
       <span>FastAPI</span><span class="dot">·</span>
       <span>Algorithms</span><span class="dot">·</span>
       <span>Data Structures</span><span class="dot">·</span>
-      <span>HTML & CSS</span><span class="dot">·</span>
+      <span>HTML &amp; CSS</span><span class="dot">·</span>
       <span>Git</span><span class="dot">·</span>
       <span>REST APIs</span><span class="dot">·</span>
       <span>Full-Stack</span><span class="dot">·</span>
@@ -89,7 +91,7 @@
       <span>FastAPI</span><span class="dot">·</span>
       <span>Algorithms</span><span class="dot">·</span>
       <span>Data Structures</span><span class="dot">·</span>
-      <span>HTML & CSS</span><span class="dot">·</span>
+      <span>HTML &amp; CSS</span><span class="dot">·</span>
       <span>Git</span><span class="dot">·</span>
       <span>REST APIs</span><span class="dot">·</span>
       <span>Full-Stack</span><span class="dot">·</span>
@@ -99,7 +101,6 @@
   <!-- ── About ── -->
   <section id="about">
     <div class="section-label reveal">/ About</div>
-
     <div class="about-grid">
       <div class="about-left reveal">
         <h2>Who I am</h2>
@@ -118,17 +119,12 @@
           </div>
         </div>
       </div>
-
       <div class="about-right reveal">
-        <p>
-          I'm a developer who enjoys building things that actually work well — not just look good.
-          My focus is on understanding the fundamentals: data structures, algorithms, and clean code
-          before reaching for frameworks.
-        </p>
-        <p>
-          Every project here is built from scratch, documented, and shipped. No tutorials copied,
-          no boilerplate — just code I can explain line by line.
-        </p>
+        <p>I'm a developer who enjoys building things that actually work well — not just look good.
+        My focus is on understanding the fundamentals: data structures, algorithms, and clean code
+        before reaching for frameworks.</p>
+        <p>Every project here is built from scratch, documented, and shipped. No tutorials copied,
+        no boilerplate — just code I can explain line by line.</p>
         <div class="skills-row">
           <div class="skill-chip">JavaScript</div>
           <div class="skill-chip">HTML / CSS</div>
@@ -145,9 +141,7 @@
   <section id="projects">
     <div class="section-label reveal">/ Projects</div>
     <h2 class="section-title reveal">Things I've built</h2>
-
     <div class="projects-grid">
-
       <article class="project-card reveal">
         <div class="card-glow"></div>
         <div class="card-header">
@@ -158,10 +152,8 @@
           </div>
         </div>
         <h3 class="card-title">Pathfinder Visualizer</h3>
-        <p class="card-desc">
-          Interactive grid visualizer for BFS, Dijkstra, A*, and DFS. Draw walls, place nodes,
-          generate mazes via recursive division — then watch algorithms find their way in real time.
-        </p>
+        <p class="card-desc">Interactive grid visualizer for BFS, Dijkstra, A*, and DFS. Draw walls, place nodes,
+        generate mazes via recursive division — then watch algorithms find their way in real time.</p>
         <ul class="card-bullets">
           <li>4 pathfinding algorithms with live animation</li>
           <li>Recursive division maze generator</li>
@@ -175,7 +167,6 @@
           </div>
         </div>
       </article>
-
       <article class="project-card project-card--empty reveal">
         <div class="empty-inner">
           <span class="empty-num">02</span>
@@ -183,7 +174,6 @@
           <span class="empty-hint">building...</span>
         </div>
       </article>
-
     </div>
   </section>
 

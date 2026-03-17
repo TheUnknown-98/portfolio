@@ -1,196 +1,146 @@
-// ── Custom Cursor ─────────────────────────────────────────────────
+// ── Cursor ────────────────────────────────────────────────────────
 const cursor    = document.getElementById('cursor');
 const cursorDot = document.getElementById('cursor-dot');
-
-let mouseX = 0, mouseY = 0;
-let curX = 0,   curY = 0;
-
-document.addEventListener('mousemove', (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  cursorDot.style.left    = mouseX + 'px';
-  cursorDot.style.top     = mouseY + 'px';
-  cursor.style.opacity    = '1';
-  cursorDot.style.opacity = '1';
+let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+ 
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursorDot.style.left = mouseX + 'px';
+  cursorDot.style.top  = mouseY + 'px';
+  cursor.style.opacity = cursorDot.style.opacity = '1';
 });
-
-(function animateCursor() {
+ 
+(function loop() {
   curX += (mouseX - curX) * 0.1;
   curY += (mouseY - curY) * 0.1;
   cursor.style.left = curX + 'px';
   cursor.style.top  = curY + 'px';
-  requestAnimationFrame(animateCursor);
+  requestAnimationFrame(loop);
 })();
-
-document.querySelectorAll('a, button, .project-card, .skill-chip, .terminal-card').forEach(el => {
+ 
+document.querySelectorAll('a, button, .project-card, .skill-chip').forEach(el => {
   el.addEventListener('mouseenter', () => {
-    cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+    cursor.style.transform = 'translate(-50%,-50%) scale(1.5)';
     cursor.style.background = 'var(--accent-dim)';
   });
   el.addEventListener('mouseleave', () => {
-    cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    cursor.style.transform = 'translate(-50%,-50%) scale(1)';
     cursor.style.background = 'transparent';
   });
 });
-
+ 
 // ── Nav scroll ────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
 }, { passive: true });
-
+ 
 // ── Typewriter ────────────────────────────────────────────────────
-const phrases   = ['Full-Stack Developer', 'Algorithm Enthusiast', 'Building from scratch'];
-let phraseIndex = 0;
-let charIndex   = 0;
-let deleting    = false;
-const el        = document.getElementById('typewriter');
-
-function typewrite() {
-  const current = phrases[phraseIndex];
-  if (!deleting) {
-    el.textContent = current.slice(0, ++charIndex);
-    if (charIndex === current.length) {
-      deleting = true;
-      setTimeout(typewrite, 1800);
-      return;
-    }
+const phrases = ['Full-Stack Developer', 'Algorithm Enthusiast', 'Building from scratch'];
+let pi = 0, ci = 0, del = false;
+const tw = document.getElementById('typewriter');
+ 
+function type() {
+  const cur = phrases[pi];
+  if (!del) {
+    tw.textContent = cur.slice(0, ++ci);
+    if (ci === cur.length) { del = true; setTimeout(type, 1800); return; }
   } else {
-    el.textContent = current.slice(0, --charIndex);
-    if (charIndex === 0) {
-      deleting = false;
-      phraseIndex = (phraseIndex + 1) % phrases.length;
-    }
+    tw.textContent = cur.slice(0, --ci);
+    if (ci === 0) { del = false; pi = (pi + 1) % phrases.length; }
   }
-  setTimeout(typewrite, deleting ? 40 : 80);
+  setTimeout(type, del ? 40 : 80);
 }
-
-setTimeout(typewrite, 600);
-
-// ── Hero name fill-in on load ──────────────────────────────────────
-setTimeout(() => {
-  document.querySelector('.hero-name')?.classList.add('revealed');
-}, 400);
-
+setTimeout(type, 700);
+ 
 // ── Canvas particle network ───────────────────────────────────────
 const canvas = document.getElementById('hero-canvas');
-const ctx    = canvas.getContext('2d');
-
-let W, H, particles;
-
+const ctx = canvas.getContext('2d');
+let W, H, pts;
+ 
 function resize() {
   W = canvas.width  = canvas.offsetWidth;
   H = canvas.height = canvas.offsetHeight;
 }
-
-window.addEventListener('resize', () => { resize(); initParticles(); });
+window.addEventListener('resize', () => { resize(); init(); });
 resize();
-
-function initParticles() {
-  const count = Math.floor((W * H) / 18000);
-  particles = Array.from({ length: count }, () => ({
-    x:  Math.random() * W,
-    y:  Math.random() * H,
-    vx: (Math.random() - 0.5) * 0.3,
-    vy: (Math.random() - 0.5) * 0.3,
-    r:  Math.random() * 1.5 + 0.5
+ 
+function init() {
+  const n = Math.floor(W * H / 16000);
+  pts = Array.from({ length: n }, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - .5) * .35,
+    vy: (Math.random() - .5) * .35,
+    r:  Math.random() * 1.5 + .5
   }));
 }
-
-initParticles();
-
-function drawParticles() {
+init();
+ 
+function draw() {
   ctx.clearRect(0, 0, W, H);
-
-  // Draw connections
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx   = particles[i].x - particles[j].x;
-      const dy   = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 130) {
-        const alpha = (1 - dist / 130) * 0.15;
-        ctx.strokeStyle = `rgba(160, 124, 245, ${alpha})`;
-        ctx.lineWidth   = 0.6;
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = i + 1; j < pts.length; j++) {
+      const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+      const d  = Math.sqrt(dx*dx + dy*dy);
+      if (d < 120) {
+        ctx.strokeStyle = `rgba(160,124,245,${(1 - d/120) * .18})`;
+        ctx.lineWidth = .6;
         ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.moveTo(pts[i].x, pts[i].y);
+        ctx.lineTo(pts[j].x, pts[j].y);
         ctx.stroke();
       }
     }
   }
-
-  // Draw dots
-  for (const p of particles) {
+  for (const p of pts) {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(160, 124, 245, 0.4)';
+    ctx.fillStyle = 'rgba(160,124,245,.45)';
     ctx.fill();
-
-    p.x += p.vx;
-    p.y += p.vy;
-
+    p.x += p.vx; p.y += p.vy;
     if (p.x < 0 || p.x > W) p.vx *= -1;
     if (p.y < 0 || p.y > H) p.vy *= -1;
   }
-
-  requestAnimationFrame(drawParticles);
+  requestAnimationFrame(draw);
 }
-
-drawParticles();
-
-// ── Scroll Reveal ─────────────────────────────────────────────────
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target);
-    }
-  });
+draw();
+ 
+// ── Scroll reveal ─────────────────────────────────────────────────
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
 }, { threshold: 0.1 });
-
-document.querySelectorAll('.reveal, .reveal-slow').forEach(el => revealObserver.observe(el));
-
+document.querySelectorAll('.reveal, .reveal-slow').forEach(el => ro.observe(el));
+ 
 // ── Count-up stats ────────────────────────────────────────────────
-const statsObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const el     = entry.target;
-    const target = parseInt(el.dataset.target);
-    const dur    = 1200;
-    const step   = 16;
-    const steps  = dur / step;
-    const inc    = target / steps;
-    let current  = 0;
-
-    const timer = setInterval(() => {
-      current += inc;
-      if (current >= target) {
-        el.textContent = target;
-        clearInterval(timer);
-      } else {
-        el.textContent = Math.floor(current);
-      }
-    }, step);
-
-    statsObserver.unobserve(el);
+const so = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, target = +el.dataset.target;
+    let cur = 0;
+    const inc = target / (1200 / 16);
+    const t = setInterval(() => {
+      cur += inc;
+      if (cur >= target) { el.textContent = target; clearInterval(t); }
+      else el.textContent = Math.floor(cur);
+    }, 16);
+    so.unobserve(el);
   });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.stat-num').forEach(el => statsObserver.observe(el));
-
-// ── Project card glow ─────────────────────────────────────────────
+}, { threshold: .5 });
+document.querySelectorAll('.stat-num').forEach(el => so.observe(el));
+ 
+// ── Card glow ─────────────────────────────────────────────────────
 document.querySelectorAll('.project-card').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--mouse-x', ((e.clientX - rect.left) / rect.width  * 100) + '%');
-    card.style.setProperty('--mouse-y', ((e.clientY - rect.top)  / rect.height * 100) + '%');
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mouse-x', ((e.clientX - r.left) / r.width  * 100) + '%');
+    card.style.setProperty('--mouse-y', ((e.clientY - r.top)  / r.height * 100) + '%');
   });
 });
-
+ 
 // ── Smooth scroll ─────────────────────────────────────────────────
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', (e) => {
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
     e.preventDefault();
-    document.querySelector(link.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
   });
 });
+ 
