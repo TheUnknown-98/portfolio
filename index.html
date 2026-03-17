@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TheUnknown — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Grain overlay -->
+  <div class="grain"></div>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <!-- ── Nav ── -->
+  <nav id="nav">
+    <span class="nav-logo">TU</span>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="mailto:your@email.com" class="nav-cta">Get in touch</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section id="hero">
+    <div class="hero-inner">
+      <p class="hero-tag reveal">Full-Stack Developer</p>
+      <h1 class="hero-name reveal">The<br><em>Unknown</em></h1>
+      <p class="hero-bio reveal">
+        <!-- ★ REPLACE THIS with your actual bio ★ -->
+        Building things from scratch — algorithms, interfaces, and everything in between.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="https://github.com/your-username" target="_blank" class="btn-ghost">GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="grid-lines"></div>
+      <div class="floating-card fc-1 reveal-slow">
+        <span class="fc-label">Algorithms</span>
+        <span class="fc-val">BFS · A* · DFS</span>
+      </div>
+      <div class="floating-card fc-2 reveal-slow">
+        <span class="fc-label">Stack</span>
+        <span class="fc-val">HTML · CSS · JS</span>
+      </div>
+      <div class="floating-card fc-3 reveal-slow">
+        <span class="fc-label">Projects</span>
+        <span class="fc-val">01 complete</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About ── -->
+  <section id="about">
+    <div class="section-label reveal">/ About</div>
+    <div class="about-grid">
+      <div class="about-left reveal">
+        <h2>Who I am</h2>
+      </div>
+      <div class="about-right reveal">
+        <p>
+          <!-- ★ REPLACE with your full about text ★ -->
+          I'm a developer who enjoys building things that actually work well — not just look good.
+          My focus is on understanding the fundamentals: data structures, algorithms, and clean code
+          before reaching for frameworks.
+        </p>
+        <p>
+          Every project here is built from scratch, documented, and shipped. No tutorials copied,
+          no boilerplate — just code I can explain line by line.
+        </p>
+        <div class="skills-row">
+          <div class="skill-chip">JavaScript</div>
+          <div class="skill-chip">HTML / CSS</div>
+          <div class="skill-chip">Algorithms</div>
+          <div class="skill-chip">React</div>
+          <div class="skill-chip">FastAPI</div>
+          <div class="skill-chip">Python</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Projects ── -->
+  <section id="projects">
+    <div class="section-label reveal">/ Projects</div>
+    <h2 class="section-title reveal">Things I've built</h2>
+
+    <div class="projects-grid">
+
+      <!-- Project 01 — Pathfinder Visualizer -->
+      <article class="project-card reveal" data-index="01">
+        <div class="card-header">
+          <span class="card-num">01</span>
+          <div class="card-tags">
+            <span class="tag">Algorithms</span>
+            <span class="tag">Vanilla JS</span>
+          </div>
+        </div>
+        <h3 class="card-title">Pathfinder Visualizer</h3>
+        <p class="card-desc">
+          Interactive grid visualizer for BFS, Dijkstra, A*, and DFS. Draw walls, place nodes,
+          generate mazes via recursive division — then watch algorithms find their way in real time.
+        </p>
+        <div class="card-footer">
+          <div class="card-stack">HTML · CSS · JS</div>
+          <div class="card-links">
+            <a href="https://your-username.github.io/pathfinder-visualizer" target="_blank">Live ↗</a>
+            <a href="https://github.com/your-username/pathfinder-visualizer" target="_blank">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="card-glow"></div>
+      </article>
+
+      <!-- Placeholder card — remove when you add project 02 -->
+      <article class="project-card project-card--empty reveal">
+        <div class="empty-inner">
+          <span class="empty-num">02</span>
+          <p class="empty-text">Next project<br>coming soon</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p class="footer-name">TheUnknown</p>
+    <p class="footer-copy">Built from scratch · No templates · No frameworks</p>
+    <div class="footer-links">
+      <a href="https://github.com/your-username" target="_blank">GitHub</a>
+      <a href="mailto:your@email.com">Email</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
