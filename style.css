@@ -289,7 +289,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 32px 80px #00000060, 0 0 0 1px #a07cf510;
   width: 100%;
   max-width: 480px;
-  margin-right: -200px;
+  margin-right: -180px;
 }
 
 .terminal-bar {
