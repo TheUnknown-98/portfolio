@@ -116,7 +116,7 @@ a { color: inherit; text-decoration: none; }
 .hero-name {
   font-family: var(--head);
   font-weight: 800;
-  font-size: clamp(3rem, 10vw, 12rem);
+  font-size: clamp(3rem, 7vw, 9rem);  /* ← change this line */
   line-height: .85;
   letter-spacing: -3px;
   color: var(--text);
