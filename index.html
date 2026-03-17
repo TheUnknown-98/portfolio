@@ -6,190 +6,194 @@
   <title>TheUnknown</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <div class="noise"></div>
-  <canvas id="bg-canvas"></canvas>
+  <canvas id="particle-canvas"></canvas>
 
   <!-- ── Nav ── -->
   <nav id="nav">
-    <span class="logo">TU</span>
-    <div class="nav-r">
-      <a href="#work">Work</a>
+    <span class="logo">TU<span class="logo-blink">_</span></span>
+    <div class="nav-links">
       <a href="#about">About</a>
-      <a href="mailto:danishgameridrisi@gmail.com" class="nav-contact">Contact ↗</a>
+      <a href="#projects">Projects</a>
+      <a href="mailto:danishgameridrisi@gmail.com" class="nav-cta">Contact</a>
     </div>
   </nav>
 
-  <!-- ── Hero ── -->
+  <!-- ══════════════════════════════
+       HERO
+       The name lives in its own full-width row.
+       The terminal card is absolutely positioned
+       so it NEVER competes with the name for space.
+  ══════════════════════════════ -->
   <section id="hero">
 
-    <!-- Top-left: giant name fades in letter by letter -->
-    <div class="hero-tl">
-      <span class="hero-tag">Full-Stack Developer</span>
-      <h1 class="hero-name" id="hero-name">
-        <span class="word" id="word-the">The</span><br>
-        <span class="word" id="word-unknown">Unknown</span>
+    <!-- Name block — owns the full width, nothing beside it -->
+    <div class="hero-top">
+      <p class="hero-eyebrow">
+        <span class="dot-live"></span>
+        <span id="typewriter"></span><span class="t-cursor">|</span>
+      </p>
+      <h1 class="hero-name">
+        <span class="hn-word" id="hn-the">The</span><br>
+        <span class="hn-word" id="hn-unknown">Unknown</span>
       </h1>
     </div>
 
-    <!-- Bottom-right: description anchored diagonally opposite -->
-    <div class="hero-br">
-      <div class="hero-br-inner">
-        <p class="hero-desc">
-          Building things from scratch —<br>
-          algorithms, interfaces,<br>
-          and everything in between.
-        </p>
-        <div class="hero-meta">
-          <span class="meta-item"><span class="meta-dot"></span>Available for work</span>
-          <span class="meta-item">Based in Mumbai, IN</span>
+    <!-- Terminal card — absolutely placed, never overlaps name -->
+    <div class="hero-card-wrap">
+      <div class="terminal">
+        <div class="term-bar">
+          <span class="tb-dot td-r"></span>
+          <span class="tb-dot td-y"></span>
+          <span class="tb-dot td-g"></span>
+          <span class="tb-title">portfolio.js</span>
         </div>
-        <div class="hero-actions">
-          <a href="#work" class="btn-main">View Projects</a>
-          <a href="https://github.com/TheUnknown-98" target="_blank" class="btn-line">GitHub ↗</a>
+        <div class="term-body">
+          <div class="tl"><span class="tk">const</span> <span class="tv">dev</span> <span class="to">=</span> <span class="tb2">{</span></div>
+          <div class="tl ti"><span class="tp">name</span><span class="to">:</span> <span class="ts">"TheUnknown"</span><span class="to">,</span></div>
+          <div class="tl ti"><span class="tp">focus</span><span class="to">:</span> <span class="ts">"Full-Stack"</span><span class="to">,</span></div>
+          <div class="tl ti"><span class="tp">stack</span><span class="to">:</span> <span class="ts">["JS","React","Python"]</span><span class="to">,</span></div>
+          <div class="tl ti"><span class="tp">projects</span><span class="to">:</span> <span class="tn">1</span><span class="to">,</span></div>
+          <div class="tl ti"><span class="tp">building</span><span class="to">:</span> <span class="tbool">true</span></div>
+          <div class="tl"><span class="tb2">}</span></div>
+          <div class="tl tgap"></div>
+          <div class="tl"><span class="tcmt">// always learning, always shipping</span></div>
         </div>
       </div>
     </div>
 
-    <!-- Center horizontal rule with year -->
-    <div class="hero-rule">
-      <div class="rule-line"></div>
-      <span class="rule-year">2026</span>
+    <!-- Bottom bar -->
+    <div class="hero-bottom">
+      <p class="hero-bio">
+        Building things from scratch — algorithms,<br>interfaces, and everything in between.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">
+          View Projects
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://github.com/TheUnknown-98" target="_blank" class="btn-ghost">GitHub ↗</a>
+      </div>
     </div>
 
   </section>
 
-  <!-- ── Ticker ── -->
-  <div class="ticker">
-    <div class="ticker-track">
-      <span>JavaScript</span><span class="sep">✦</span>
-      <span>React</span><span class="sep">✦</span>
-      <span>Python</span><span class="sep">✦</span>
-      <span>FastAPI</span><span class="sep">✦</span>
-      <span>Algorithms</span><span class="sep">✦</span>
-      <span>Data Structures</span><span class="sep">✦</span>
-      <span>HTML & CSS</span><span class="sep">✦</span>
-      <span>Full-Stack</span><span class="sep">✦</span>
-      <span>JavaScript</span><span class="sep">✦</span>
-      <span>React</span><span class="sep">✦</span>
-      <span>Python</span><span class="sep">✦</span>
-      <span>FastAPI</span><span class="sep">✦</span>
-      <span>Algorithms</span><span class="sep">✦</span>
-      <span>Data Structures</span><span class="sep">✦</span>
-      <span>HTML & CSS</span><span class="sep">✦</span>
-      <span>Full-Stack</span><span class="sep">✦</span>
+  <!-- ── Marquee ── -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>JavaScript</span><span class="msep">·</span>
+      <span>React</span><span class="msep">·</span>
+      <span>Python</span><span class="msep">·</span>
+      <span>FastAPI</span><span class="msep">·</span>
+      <span>Algorithms</span><span class="msep">·</span>
+      <span>Data Structures</span><span class="msep">·</span>
+      <span>HTML &amp; CSS</span><span class="msep">·</span>
+      <span>Full-Stack Dev</span><span class="msep">·</span>
+      <span>JavaScript</span><span class="msep">·</span>
+      <span>React</span><span class="msep">·</span>
+      <span>Python</span><span class="msep">·</span>
+      <span>FastAPI</span><span class="msep">·</span>
+      <span>Algorithms</span><span class="msep">·</span>
+      <span>Data Structures</span><span class="msep">·</span>
+      <span>HTML &amp; CSS</span><span class="msep">·</span>
+      <span>Full-Stack Dev</span><span class="msep">·</span>
     </div>
   </div>
 
-  <!-- ── Work ── -->
-  <section id="work">
-    <div class="section-head reveal">
-      <span class="s-index">01</span>
-      <h2 class="s-title">Selected Work</h2>
-    </div>
-
-    <div class="work-list">
-
-      <a href="https://theunknown-98.github.io/pathfinder-visualizer"
-         target="_blank"
-         class="work-item reveal">
-        <div class="wi-left">
-          <span class="wi-num">01</span>
-          <div>
-            <h3 class="wi-name">Pathfinder Visualizer</h3>
-            <p class="wi-sub">BFS · Dijkstra · A* · DFS · Maze Generation</p>
+  <!-- ── About ── -->
+  <section id="about">
+    <div class="sec-label reveal">/ About</div>
+    <div class="about-grid">
+      <div class="about-left reveal">
+        <h2>Who I am</h2>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-n" data-target="1">0</span>
+            <span class="stat-l">Project shipped</span>
+          </div>
+          <div class="stat">
+            <span class="stat-n" data-target="4">0</span>
+            <span class="stat-l">Algorithms built</span>
+          </div>
+          <div class="stat">
+            <span class="stat-n" data-target="100">0</span>
+            <span class="stat-l">% Original code</span>
           </div>
         </div>
-        <div class="wi-right">
-          <div class="wi-tags">
-            <span>Algorithms</span>
-            <span>Vanilla JS</span>
-          </div>
-          <span class="wi-arrow">↗</span>
-        </div>
-        <div class="wi-hover-bg"></div>
-      </a>
-
-      <div class="work-item work-item--wip reveal">
-        <div class="wi-left">
-          <span class="wi-num">02</span>
-          <div>
-            <h3 class="wi-name">Next Project</h3>
-            <p class="wi-sub">Currently in development</p>
-          </div>
-        </div>
-        <div class="wi-right">
-          <span class="wi-wip">In Progress</span>
-        </div>
-        <div class="wi-hover-bg"></div>
       </div>
-
+      <div class="about-right reveal">
+        <p>I'm a developer who enjoys building things that actually work well — not just look good.
+        My focus is on understanding the fundamentals: data structures, algorithms, and clean code
+        before reaching for frameworks.</p>
+        <p>Every project here is built from scratch, documented, and shipped. No tutorials copied,
+        no boilerplate — just code I can explain line by line.</p>
+        <div class="chips">
+          <span>JavaScript</span>
+          <span>HTML / CSS</span>
+          <span>Algorithms</span>
+          <span>React</span>
+          <span>FastAPI</span>
+          <span>Python</span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ── About ── -->
-  <section id="about">
-    <div class="section-head reveal">
-      <span class="s-index">02</span>
-      <h2 class="s-title">About</h2>
-    </div>
+  <!-- ── Projects ── -->
+  <section id="projects">
+    <div class="sec-label reveal">/ Projects</div>
+    <h2 class="sec-title reveal">Things I've built</h2>
+    <div class="proj-grid">
 
-    <div class="about-body">
-      <div class="about-statement reveal">
-        <p>I build things<br><em>properly.</em></p>
-      </div>
-      <div class="about-copy reveal">
-        <p>Developer focused on algorithms, interfaces, and
-        full-stack systems. Every project starts from a blank
-        file — no boilerplate, no copy-paste, just code I can
-        explain line by line.</p>
-        <p>Currently growing a portfolio of projects that
-        demonstrate real understanding, not just
-        tutorials followed.</p>
-
-        <div class="counters">
-          <div class="counter">
-            <span class="c-num" data-target="1">0</span>
-            <span class="c-label">Projects</span>
-          </div>
-          <div class="counter">
-            <span class="c-num" data-target="4">0</span>
-            <span class="c-label">Algorithms</span>
-          </div>
-          <div class="counter">
-            <span class="c-num" data-target="100">0</span>
-            <span class="c-label">% Original</span>
+      <article class="proj-card reveal">
+        <div class="card-glow"></div>
+        <div class="card-top">
+          <span class="card-num">01</span>
+          <div class="card-tags">
+            <span>Algorithms</span>
+            <span>Vanilla JS</span>
           </div>
         </div>
-
-        <div class="chips">
-          <span>JavaScript</span><span>React</span>
-          <span>Python</span><span>FastAPI</span>
-          <span>HTML/CSS</span><span>Algorithms</span>
+        <h3 class="card-name">Pathfinder Visualizer</h3>
+        <p class="card-desc">Interactive grid visualizer for BFS, Dijkstra, A*, and DFS.
+        Draw walls, generate mazes, watch algorithms find their way in real time.</p>
+        <ul class="card-feats">
+          <li>4 pathfinding algorithms with live animation</li>
+          <li>Recursive division maze generator</li>
+          <li>Speed control + live compute stats</li>
+        </ul>
+        <div class="card-foot">
+          <span class="card-stack">HTML · CSS · JS</span>
+          <div class="card-links">
+            <a href="https://theunknown-98.github.io/pathfinder-visualizer" target="_blank">Live ↗</a>
+            <a href="https://github.com/TheUnknown-98/pathfinder-visualizer" target="_blank">GitHub ↗</a>
+          </div>
         </div>
-      </div>
+      </article>
+
+      <article class="proj-card proj-card--empty reveal">
+        <div class="empty-inner">
+          <span class="empty-n">02</span>
+          <p class="empty-t">Next project<br>coming soon</p>
+          <span class="empty-hint">building...</span>
+        </div>
+      </article>
+
     </div>
   </section>
 
   <!-- ── Footer ── -->
   <footer>
-    <div class="foot-top reveal">
-      <p class="foot-cta">Got a project in mind?</p>
-      <a href="mailto:danishgameridrisi@gmail.com" class="foot-email">
-        danishgameridrisi@gmail.com ↗
-      </a>
-    </div>
-    <div class="foot-bottom">
-      <span>TheUnknown · 2026</span>
-      <span>Built from scratch</span>
-      <div class="foot-links">
-        <a href="https://github.com/TheUnknown-98" target="_blank">GitHub</a>
-        <a href="mailto:danishgameridrisi@gmail.com">Email</a>
-      </div>
+    <p class="foot-name">TheUnknown</p>
+    <p class="foot-copy">Built from scratch · No templates · No frameworks</p>
+    <div class="foot-links">
+      <a href="https://github.com/TheUnknown-98" target="_blank">GitHub</a>
+      <a href="mailto:danishgameridrisi@gmail.com">Email</a>
     </div>
   </footer>
 
