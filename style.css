@@ -138,8 +138,8 @@ a { color: inherit; text-decoration: none; }
 .hero-card-wrap {
   position: absolute;
   top: auto;
-  bottom: 140px;
-  left: 66px;
+  bottom: 150px;
+  left: 46px;
   right: auto;
   transform: none;
   width: 360px;
