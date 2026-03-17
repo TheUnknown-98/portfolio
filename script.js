@@ -2,14 +2,14 @@
 const cursor    = document.getElementById('cursor');
 const cursorDot = document.getElementById('cursor-dot');
 let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
- 
+
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX; mouseY = e.clientY;
   cursorDot.style.left = mouseX + 'px';
   cursorDot.style.top  = mouseY + 'px';
   cursor.style.opacity = cursorDot.style.opacity = '1';
 });
- 
+
 (function loop() {
   curX += (mouseX - curX) * 0.1;
   curY += (mouseY - curY) * 0.1;
@@ -17,7 +17,7 @@ document.addEventListener('mousemove', e => {
   cursor.style.top  = curY + 'px';
   requestAnimationFrame(loop);
 })();
- 
+
 document.querySelectorAll('a, button, .project-card, .skill-chip').forEach(el => {
   el.addEventListener('mouseenter', () => {
     cursor.style.transform = 'translate(-50%,-50%) scale(1.5)';
@@ -28,17 +28,17 @@ document.querySelectorAll('a, button, .project-card, .skill-chip').forEach(el =>
     cursor.style.background = 'transparent';
   });
 });
- 
+
 // ── Nav scroll ────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
 }, { passive: true });
- 
+
 // ── Typewriter ────────────────────────────────────────────────────
 const phrases = ['Full-Stack Developer', 'Algorithm Enthusiast', 'Building from scratch'];
 let pi = 0, ci = 0, del = false;
 const tw = document.getElementById('typewriter');
- 
+
 function type() {
   const cur = phrases[pi];
   if (!del) {
@@ -51,19 +51,19 @@ function type() {
   setTimeout(type, del ? 40 : 80);
 }
 setTimeout(type, 700);
- 
+
 // ── Canvas particle network ───────────────────────────────────────
 const canvas = document.getElementById('hero-canvas');
 const ctx = canvas.getContext('2d');
 let W, H, pts;
- 
+
 function resize() {
   W = canvas.width  = canvas.offsetWidth;
   H = canvas.height = canvas.offsetHeight;
 }
 window.addEventListener('resize', () => { resize(); init(); });
 resize();
- 
+
 function init() {
   const n = Math.floor(W * H / 16000);
   pts = Array.from({ length: n }, () => ({
@@ -74,7 +74,7 @@ function init() {
   }));
 }
 init();
- 
+
 function draw() {
   ctx.clearRect(0, 0, W, H);
   for (let i = 0; i < pts.length; i++) {
@@ -103,13 +103,13 @@ function draw() {
   requestAnimationFrame(draw);
 }
 draw();
- 
+
 // ── Scroll reveal ─────────────────────────────────────────────────
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal, .reveal-slow').forEach(el => ro.observe(el));
- 
+
 // ── Count-up stats ────────────────────────────────────────────────
 const so = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -126,7 +126,7 @@ const so = new IntersectionObserver(entries => {
   });
 }, { threshold: .5 });
 document.querySelectorAll('.stat-num').forEach(el => so.observe(el));
- 
+
 // ── Card glow ─────────────────────────────────────────────────────
 document.querySelectorAll('.project-card').forEach(card => {
   card.addEventListener('mousemove', e => {
@@ -135,7 +135,7 @@ document.querySelectorAll('.project-card').forEach(card => {
     card.style.setProperty('--mouse-y', ((e.clientY - r.top)  / r.height * 100) + '%');
   });
 });
- 
+
 // ── Smooth scroll ─────────────────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
@@ -143,4 +143,3 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
   });
 });
- 
