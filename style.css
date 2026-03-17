@@ -137,11 +137,11 @@ a { color: inherit; text-decoration: none; }
 /* ── Terminal card — absolutely positioned, right side ── */
 .hero-card-wrap {
   position: absolute;
-  top: auto;
-  bottom: 150px;
-  left: 55%;
-  right: auto;
-  transform: translateX(-50%);
+  top: 320px;
+  right: 200px;
+  left: auto;
+  bottom: auto;
+  transform: none;
   width: 360px;
   z-index: 2;
   opacity: 0;
