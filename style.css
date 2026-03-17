@@ -116,8 +116,7 @@ a { color: inherit; text-decoration: none; }
 .hero-name {
   font-family: var(--head);
   font-weight: 800;
-  /* Uses viewport width so it always fits perfectly */
-  font-size: clamp(4.5rem, 14vw, 15rem);
+  font-size: clamp(3rem, 8vw, 9rem);
   line-height: .85;
   letter-spacing: -3px;
   color: var(--text);
@@ -138,11 +137,10 @@ a { color: inherit; text-decoration: none; }
 /* ── Terminal card — absolutely positioned, right side ── */
 .hero-card-wrap {
   position: absolute;
-  /* Sits in the right portion, vertically centered */
-  top: 50%;
+  top: 110px;
   right: 56px;
-  transform: translateY(-50%);
-  width: 380px;
+  transform: none;
+  width: 360px;
   z-index: 2;
   opacity: 0;
   animation: rise 1s 1.6s forwards;
