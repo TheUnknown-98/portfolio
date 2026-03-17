@@ -140,7 +140,7 @@ a { color: inherit; text-decoration: none; }
 #hero {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: 1fr 1.8fr;
   align-items: center;
   padding: 120px 48px 80px;
   position: relative;
