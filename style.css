@@ -161,6 +161,7 @@ a { color: inherit; text-decoration: none; }
   max-width: 560px;
   position: relative;
   z-index: 1;
+  overflow: hidden;
 }
 
 /* Typewriter */
