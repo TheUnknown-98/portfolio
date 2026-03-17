@@ -10,14 +10,11 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
- 
-  <!-- Grain overlay -->
+
   <div class="grain"></div>
- 
-  <!-- Custom cursor -->
   <div class="cursor" id="cursor"></div>
   <div class="cursor-dot" id="cursor-dot"></div>
- 
+
   <!-- ── Nav ── -->
   <nav id="nav">
     <span class="nav-logo">TU</span>
@@ -27,45 +24,101 @@
       <a href="mailto:danishgameridrisi@gmail.com" class="nav-cta">Get in touch</a>
     </div>
   </nav>
- 
+
   <!-- ── Hero ── -->
   <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+
     <div class="hero-inner">
-      <p class="hero-tag reveal">Full-Stack Developer</p>
-      <h1 class="hero-name reveal">The<br><em>Unknown</em></h1>
+      <p class="hero-tag"><span id="typewriter"></span><span class="cursor-blink">|</span></p>
+      <h1 class="hero-name reveal">
+        <span class="name-the">The</span>
+        <span class="name-unknown">Unknown</span>
+      </h1>
       <p class="hero-bio reveal">
-        Building things from scratch — algorithms, interfaces, and everything in between.
+        Building things from scratch — algorithms, interfaces,<br>and everything in between.
       </p>
       <div class="hero-actions reveal">
-        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="#projects" class="btn-primary">
+          <span>View Projects</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
         <a href="https://github.com/TheUnknown-98" target="_blank" class="btn-ghost">GitHub ↗</a>
       </div>
     </div>
- 
-    <div class="hero-visual">
-      <div class="grid-lines"></div>
-      <div class="floating-card fc-1 reveal-slow">
-        <span class="fc-label">Algorithms</span>
-        <span class="fc-val">BFS · A* · DFS</span>
-      </div>
-      <div class="floating-card fc-2 reveal-slow">
-        <span class="fc-label">Stack</span>
-        <span class="fc-val">HTML · CSS · JS</span>
-      </div>
-      <div class="floating-card fc-3 reveal-slow">
-        <span class="fc-label">Projects</span>
-        <span class="fc-val">01 complete</span>
+
+    <div class="hero-right reveal-slow">
+      <div class="terminal-card">
+        <div class="terminal-bar">
+          <span class="t-dot t-red"></span>
+          <span class="t-dot t-yellow"></span>
+          <span class="t-dot t-green"></span>
+          <span class="t-title">portfolio.js</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-kw">const</span> <span class="t-var">dev</span> <span class="t-op">=</span> <span class="t-str">{</span></div>
+          <div class="t-line t-indent"><span class="t-prop">name</span><span class="t-op">:</span> <span class="t-str">"TheUnknown"</span><span class="t-op">,</span></div>
+          <div class="t-line t-indent"><span class="t-prop">focus</span><span class="t-op">:</span> <span class="t-str">"Full-Stack"</span><span class="t-op">,</span></div>
+          <div class="t-line t-indent"><span class="t-prop">stack</span><span class="t-op">:</span> <span class="t-str">["JS", "React", "Python"]</span><span class="t-op">,</span></div>
+          <div class="t-line t-indent"><span class="t-prop">projects</span><span class="t-op">:</span> <span class="t-num">1</span><span class="t-op">,</span></div>
+          <div class="t-line t-indent"><span class="t-prop">building</span><span class="t-op">:</span> <span class="t-bool">true</span></div>
+          <div class="t-line"><span class="t-str">}</span></div>
+          <div class="t-line t-gap"></div>
+          <div class="t-line"><span class="t-comment">// always learning, always shipping</span></div>
+        </div>
       </div>
     </div>
   </section>
- 
+
+  <!-- ── Marquee ── -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span>JavaScript</span><span class="dot">·</span>
+      <span>React</span><span class="dot">·</span>
+      <span>Python</span><span class="dot">·</span>
+      <span>FastAPI</span><span class="dot">·</span>
+      <span>Algorithms</span><span class="dot">·</span>
+      <span>Data Structures</span><span class="dot">·</span>
+      <span>HTML & CSS</span><span class="dot">·</span>
+      <span>Git</span><span class="dot">·</span>
+      <span>REST APIs</span><span class="dot">·</span>
+      <span>Full-Stack</span><span class="dot">·</span>
+      <span>JavaScript</span><span class="dot">·</span>
+      <span>React</span><span class="dot">·</span>
+      <span>Python</span><span class="dot">·</span>
+      <span>FastAPI</span><span class="dot">·</span>
+      <span>Algorithms</span><span class="dot">·</span>
+      <span>Data Structures</span><span class="dot">·</span>
+      <span>HTML & CSS</span><span class="dot">·</span>
+      <span>Git</span><span class="dot">·</span>
+      <span>REST APIs</span><span class="dot">·</span>
+      <span>Full-Stack</span><span class="dot">·</span>
+    </div>
+  </div>
+
   <!-- ── About ── -->
   <section id="about">
     <div class="section-label reveal">/ About</div>
+
     <div class="about-grid">
       <div class="about-left reveal">
         <h2>Who I am</h2>
+        <div class="stats-col">
+          <div class="stat-item">
+            <span class="stat-num" data-target="1">0</span>
+            <span class="stat-label">Project shipped</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" data-target="4">0</span>
+            <span class="stat-label">Algorithms built</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" data-target="100">0</span>
+            <span class="stat-label">% from scratch</span>
+          </div>
+        </div>
       </div>
+
       <div class="about-right reveal">
         <p>
           I'm a developer who enjoys building things that actually work well — not just look good.
@@ -87,16 +140,16 @@
       </div>
     </div>
   </section>
- 
+
   <!-- ── Projects ── -->
   <section id="projects">
     <div class="section-label reveal">/ Projects</div>
     <h2 class="section-title reveal">Things I've built</h2>
- 
+
     <div class="projects-grid">
- 
-      <!-- Project 01 — Pathfinder Visualizer -->
-      <article class="project-card reveal" data-index="01">
+
+      <article class="project-card reveal">
+        <div class="card-glow"></div>
         <div class="card-header">
           <span class="card-num">01</span>
           <div class="card-tags">
@@ -109,6 +162,11 @@
           Interactive grid visualizer for BFS, Dijkstra, A*, and DFS. Draw walls, place nodes,
           generate mazes via recursive division — then watch algorithms find their way in real time.
         </p>
+        <ul class="card-bullets">
+          <li>4 pathfinding algorithms with live animation</li>
+          <li>Recursive division maze generator</li>
+          <li>Speed control + live stats (compute time, nodes explored)</li>
+        </ul>
         <div class="card-footer">
           <div class="card-stack">HTML · CSS · JS</div>
           <div class="card-links">
@@ -116,20 +174,19 @@
             <a href="https://github.com/TheUnknown-98/pathfinder-visualizer" target="_blank">GitHub ↗</a>
           </div>
         </div>
-        <div class="card-glow"></div>
       </article>
- 
-      <!-- Placeholder card — remove when you add project 02 -->
+
       <article class="project-card project-card--empty reveal">
         <div class="empty-inner">
           <span class="empty-num">02</span>
           <p class="empty-text">Next project<br>coming soon</p>
+          <span class="empty-hint">building...</span>
         </div>
       </article>
- 
+
     </div>
   </section>
- 
+
   <!-- ── Footer ── -->
   <footer>
     <p class="footer-name">TheUnknown</p>
@@ -139,7 +196,7 @@
       <a href="mailto:danishgameridrisi@gmail.com">Email</a>
     </div>
   </footer>
- 
+
   <script src="script.js"></script>
 </body>
 </html>
