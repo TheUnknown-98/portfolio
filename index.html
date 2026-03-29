@@ -12,66 +12,38 @@
 <body>
 
   <div class="noise"></div>
+  <div class="spotlight" id="spotlight"></div>
   <canvas id="particle-canvas"></canvas>
 
   <!-- ── Nav ── -->
   <nav id="nav">
     <span class="logo">TU<span class="logo-blink">_</span></span>
     <div class="nav-links">
-      <a href="#about">About</a>
       <a href="#projects">Projects</a>
-      <a href="/cdn-cgi/l/email-protection#d6b2b7b8bfa5beb1b7bbb3a4bfb2a4bfa5bf96b1bbb7bfbaf8b5b9bb" class="nav-cta">Contact</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="nav-cta">Contact</a>
     </div>
   </nav>
 
-  <!-- ══════════════════════════════
-       HERO
-       The name lives in its own full-width row.
-       The terminal card is absolutely positioned
-       so it NEVER competes with the name for space.
-  ══════════════════════════════ -->
+  <!-- ── Hero ── -->
   <section id="hero">
-
-    <!-- Name block — owns the full width, nothing beside it -->
-    <div class="hero-top">
+    <div class="hero-inner">
       <p class="hero-eyebrow">
         <span class="dot-live"></span>
         <span id="typewriter"></span><span class="t-cursor">|</span>
       </p>
-      <h1 class="hero-name">
-        <span class="hn-word" id="hn-the">The</span><br>
-        <span class="hn-word" id="hn-unknown">Unknown</span>
+
+      <h1 class="hero-heading">
+        <span class="h-row h-row--static">I build things</span>
+        <span class="h-row">
+          <span class="h-static">that </span><span class="h-word" id="cycleWord"></span><span class="h-period">.</span>
+        </span>
       </h1>
-    </div>
 
-    <!-- Terminal card — absolutely placed, never overlaps name -->
-    <div class="hero-card-wrap">
-      <div class="terminal">
-        <div class="term-bar">
-          <span class="tb-dot td-r"></span>
-          <span class="tb-dot td-y"></span>
-          <span class="tb-dot td-g"></span>
-          <span class="tb-title">portfolio.js</span>
-        </div>
-        <div class="term-body">
-          <div class="tl"><span class="tk">const</span> <span class="tv">dev</span> <span class="to">=</span> <span class="tb2">{</span></div>
-          <div class="tl ti"><span class="tp">name</span><span class="to">:</span> <span class="ts">"TheUnknown"</span><span class="to">,</span></div>
-          <div class="tl ti"><span class="tp">focus</span><span class="to">:</span> <span class="ts">"Full-Stack"</span><span class="to">,</span></div>
-          <div class="tl ti"><span class="tp">stack</span><span class="to">:</span> <span class="ts">["JS","React","Python"]</span><span class="to">,</span></div>
-          <div class="tl ti"><span class="tp">projects</span><span class="to">:</span> <span class="tn">2</span><span class="to">,</span></div>
-          <div class="tl ti"><span class="tp">building</span><span class="to">:</span> <span class="tbool">true</span></div>
-          <div class="tl"><span class="tb2">}</span></div>
-          <div class="tl tgap"></div>
-          <div class="tl"><span class="tcmt">// always learning, always shipping</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottom bar -->
-    <div class="hero-bottom">
       <p class="hero-bio">
-        Building things from scratch — algorithms,<br>interfaces, and everything in between.
+        Algorithms, interfaces, and everything in between —<br />built from scratch, no shortcuts.
       </p>
+
       <div class="hero-actions">
         <a href="#projects" class="btn-primary">
           View Projects
@@ -81,6 +53,22 @@
       </div>
     </div>
 
+    <div class="hero-stats">
+      <div class="hstat">
+        <span class="hstat-n" data-target="2">0</span>
+        <span class="hstat-l">Projects shipped</span>
+      </div>
+      <div class="hstat-sep"></div>
+      <div class="hstat">
+        <span class="hstat-n" data-target="4">0</span>
+        <span class="hstat-l">Algorithms built</span>
+      </div>
+      <div class="hstat-sep"></div>
+      <div class="hstat">
+        <span class="hstat-n" data-target="100">0</span>
+        <span class="hstat-l">% Original code</span>
+      </div>
+    </div>
   </section>
 
   <!-- ── Marquee ── -->
@@ -105,69 +93,36 @@
     </div>
   </div>
 
-  <!-- ── About ── -->
-  <section id="about">
-    <div class="sec-label reveal">/ About</div>
-    <div class="about-grid">
-      <div class="about-left reveal">
-        <h2>Who I am</h2>
-        <div class="stats">
-          <div class="stat">
-            <span class="stat-n" data-target="2">0</span>
-            <span class="stat-l">Projects shipped</span>
-          </div>
-          <div class="stat">
-            <span class="stat-n" data-target="4">0</span>
-            <span class="stat-l">Algorithms built</span>
-          </div>
-          <div class="stat">
-            <span class="stat-n" data-target="100">0</span>
-            <span class="stat-l">% Original code</span>
-          </div>
-        </div>
-      </div>
-      <div class="about-right reveal">
-        <p>I'm a developer who enjoys building things that actually work well — not just look good.
-        My focus is on understanding the fundamentals: data structures, algorithms, and clean code
-        before reaching for frameworks.</p>
-        <p>Every project here is built from scratch, documented, and shipped. No tutorials copied,
-        no boilerplate.</p>
-        <div class="chips">
-          <span>JavaScript</span>
-          <span>HTML / CSS</span>
-          <span>Algorithms</span>
-          <span>React</span>
-          <span>FastAPI</span>
-          <span>Python</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ── Projects ── -->
   <section id="projects">
-    <div class="sec-label reveal">/ Projects</div>
-    <h2 class="sec-title reveal">Things I've built</h2>
-    <div class="proj-grid">
+    <div class="sec-head reveal">
+      <span class="sec-label">/ Projects</span>
+      <h2 class="sec-title">Things I've built</h2>
+    </div>
+
+    <div class="proj-list">
 
       <article class="proj-card reveal">
         <div class="card-glow"></div>
-        <div class="card-top">
+        <div class="card-num-col">
           <span class="card-num">01</span>
-          <div class="card-tags">
-            <span>Algorithms</span>
-            <span>Vanilla JS</span>
-          </div>
         </div>
-        <h3 class="card-name">Pathfinder Visualizer</h3>
-        <p class="card-desc">Interactive grid visualizer for BFS, Dijkstra, A*, and DFS.
-        Draw walls, generate mazes, watch algorithms find their way in real time.</p>
-        <ul class="card-feats">
-          <li>4 pathfinding algorithms with live animation</li>
-          <li>Recursive division maze generator</li>
-          <li>Speed control + live compute stats</li>
-        </ul>
-        <div class="card-foot">
+        <div class="card-body-col">
+          <div class="card-top">
+            <h3 class="card-name">Pathfinder Visualizer</h3>
+            <div class="card-tags">
+              <span>Algorithms</span>
+              <span>Vanilla JS</span>
+            </div>
+          </div>
+          <p class="card-desc">Interactive grid visualizer for BFS, Dijkstra, A*, and DFS. Draw walls, generate mazes, watch algorithms find their way in real time.</p>
+          <ul class="card-feats">
+            <li>4 pathfinding algorithms with live animation</li>
+            <li>Recursive division maze generator</li>
+            <li>Speed control + live compute stats</li>
+          </ul>
+        </div>
+        <div class="card-foot-col">
           <span class="card-stack">HTML · CSS · JS</span>
           <div class="card-links">
             <a href="https://theunknown-98.github.io/pathfinder-visualizer" target="_blank">Live ↗</a>
@@ -178,21 +133,25 @@
 
       <article class="proj-card reveal">
         <div class="card-glow"></div>
-        <div class="card-top">
+        <div class="card-num-col">
           <span class="card-num">02</span>
-          <div class="card-tags">
-            <span>Tool</span>
-            <span>Vanilla JS</span>
-          </div>
         </div>
-        <h3 class="card-name">Snap Decision</h3>
-        <p class="card-desc">A decision-making tool that bypasses overthinking with three gut-check questions — each targeting a different psychological signal to surface what you actually want.</p>
-        <ul class="card-feats">
-          <li>Three questions targeting instinct, desire and fear of loss</li>
-          <li>Psychological scoring with natural language result</li>
-          <li>Zero dependencies — pure HTML, CSS, JS</li>
-        </ul>
-        <div class="card-foot">
+        <div class="card-body-col">
+          <div class="card-top">
+            <h3 class="card-name">Snap Decision</h3>
+            <div class="card-tags">
+              <span>Tool</span>
+              <span>Vanilla JS</span>
+            </div>
+          </div>
+          <p class="card-desc">A decision-making tool that bypasses overthinking with three gut-check questions — each targeting a different psychological signal to surface what you actually want.</p>
+          <ul class="card-feats">
+            <li>Three questions targeting instinct, desire and fear of loss</li>
+            <li>Psychological scoring with natural language result</li>
+            <li>Zero dependencies — pure HTML, CSS, JS</li>
+          </ul>
+        </div>
+        <div class="card-foot-col">
           <span class="card-stack">HTML · CSS · JS</span>
           <div class="card-links">
             <a href="https://theunknown-98.github.io/snap-decision" target="_blank">Live ↗</a>
@@ -204,10 +163,65 @@
     </div>
   </section>
 
+  <!-- ── About ── -->
+  <section id="about">
+    <div class="sec-head reveal">
+      <span class="sec-label">/ About</span>
+    </div>
+    <div class="about-layout">
+      <div class="skills-col skills-col--left reveal">
+        <span class="skill-pill">JavaScript</span>
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">React</span>
+        <span class="skill-pill">FastAPI</span>
+      </div>
+      <div class="about-statement-col reveal">
+        <p class="about-statement">
+          I'm a developer who enjoys building things that actually <em>work well</em> — not just look good. My focus is on understanding the fundamentals: data structures, algorithms, and clean code before reaching for frameworks.
+        </p>
+        <p class="about-sub">
+          Every project here is built from scratch, documented, and shipped. No tutorials copied, no boilerplate.
+        </p>
+      </div>
+      <div class="skills-col skills-col--right reveal">
+        <span class="skill-pill">Algorithms</span>
+        <span class="skill-pill">HTML / CSS</span>
+        <span class="skill-pill">Data Structures</span>
+        <span class="skill-pill">Full-Stack</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ── -->
+  <section id="contact">
+    <div class="contact-wrap reveal">
+      <div class="contact-left">
+        <span class="sec-label">/ Contact</span>
+        <h2 class="contact-heading">
+          Let's build<br /><em>something.</em>
+        </h2>
+        <p class="contact-sub">Open to collaborations, interesting projects, and good conversations.</p>
+      </div>
+      <div class="contact-right">
+        <svg class="contact-arrow" viewBox="0 0 120 60" fill="none">
+          <path d="M10 50 Q60 10 100 30" stroke="#2a2050" stroke-width="1.5" fill="none"/>
+          <path d="M92 24 L100 30 L96 38" stroke="#2a2050" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <a href="mailto:danishgameridrisi@gmail.com" class="contact-email-pill">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          danishgameridrisi@gmail.com
+        </a>
+        <a href="https://github.com/TheUnknown-98" target="_blank" class="contact-gh-pill">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Footer ── -->
   <footer>
-    <p class="foot-name">TheUnknown</p>
+    <span class="foot-logo">TU_</span>
     <p class="foot-copy">Built from scratch · No templates · No frameworks</p>
-    <div class="foot-links">
-      <a href="https://github.com/TheUnknown-98" target="_blank">GitHub</a>
-      <a href="/cdn-cgi/l/email-protection#ff9b9e91968c97989e929a8d969b8d968c96bf98929e
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

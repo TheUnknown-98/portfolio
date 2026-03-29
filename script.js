@@ -1,24 +1,45 @@
-// ── Particle network canvas ───────────────────────────────────────
+/* ─────────────────────────────────────────────────────────────
+   THEUNKNOWN  ·  Portfolio v2  ·  script.js
+   ───────────────────────────────────────────────────────────── */
+'use strict';
+
+// ── Mouse spotlight ───────────────────────────────────────────────
+const spotlight = document.getElementById('spotlight');
+let sX = window.innerWidth / 2, sY = window.innerHeight / 2;
+let tX = sX, tY = sY;
+
+document.addEventListener('mousemove', e => {
+  tX = e.clientX; tY = e.clientY;
+});
+
+(function animSpotlight() {
+  sX += (tX - sX) * 0.09;
+  sY += (tY - sY) * 0.09;
+  spotlight.style.left = sX + 'px';
+  spotlight.style.top  = sY + 'px';
+  requestAnimationFrame(animSpotlight);
+})();
+
+// ── Particle canvas ───────────────────────────────────────────────
 const canvas = document.getElementById('particle-canvas');
 const ctx    = canvas.getContext('2d');
 
-function resize() {
+function resizeCanvas() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
 }
-resize();
-window.addEventListener('resize', () => { resize(); initParticles(); });
+resizeCanvas();
+window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
 
 let particles = [];
-
 function initParticles() {
-  const count = Math.floor(window.innerWidth * window.innerHeight / 18000);
+  const count = Math.floor(window.innerWidth * window.innerHeight / 20000);
   particles = Array.from({ length: count }, () => ({
     x:  Math.random() * canvas.width,
     y:  Math.random() * canvas.height,
-    vx: (Math.random() - .5) * .28,
-    vy: (Math.random() - .5) * .28,
-    r:  Math.random() * 1.4 + .4
+    vx: (Math.random() - .5) * .22,
+    vy: (Math.random() - .5) * .22,
+    r:  Math.random() * 1.2 + .3,
   }));
 }
 initParticles();
@@ -27,17 +48,16 @@ function drawParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Ambient glow blobs
-  const blobs = [
-    { x: .15, y: .25, r: 380, c: '#9d6fff' },
-    { x: .85, y: .65, r: 320, c: '#7c3aed' },
-    { x: .5,  y: .9,  r: 260, c: '#a78bfa' },
-  ];
-  blobs.forEach(b => {
+  [
+    { x: .12, y: .2,  r: 420, c: '#9d6fff' },
+    { x: .88, y: .7,  r: 360, c: '#7c3aed' },
+    { x: .5,  y: .95, r: 280, c: '#a78bfa' },
+  ].forEach(b => {
     const g = ctx.createRadialGradient(
       b.x * canvas.width, b.y * canvas.height, 0,
       b.x * canvas.width, b.y * canvas.height, b.r
     );
-    g.addColorStop(0, b.c + '14');
+    g.addColorStop(0, b.c + '10');
     g.addColorStop(1, 'transparent');
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -49,9 +69,9 @@ function drawParticles() {
       const dx = particles[i].x - particles[j].x;
       const dy = particles[i].y - particles[j].y;
       const d  = Math.sqrt(dx*dx + dy*dy);
-      if (d < 120) {
-        ctx.strokeStyle = `rgba(157,111,255,${(1 - d/120) * .15})`;
-        ctx.lineWidth   = .5;
+      if (d < 110) {
+        ctx.strokeStyle = `rgba(157,111,255,${(1 - d/110) * .12})`;
+        ctx.lineWidth = .5;
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
@@ -64,7 +84,7 @@ function drawParticles() {
   particles.forEach(p => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(157,111,255,.38)';
+    ctx.fillStyle = 'rgba(157,111,255,.3)';
     ctx.fill();
     p.x += p.vx; p.y += p.vy;
     if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
@@ -75,22 +95,46 @@ function drawParticles() {
 }
 drawParticles();
 
-// ── Letter-by-letter name reveal ──────────────────────────────────
-function lettersIn(id, baseDelay) {
-  const el   = document.getElementById(id);
-  const text = el.textContent;
-  el.innerHTML = '';
-  [...text].forEach((ch, i) => {
-    const s = document.createElement('span');
-    s.className   = 'hn-letter';
-    s.textContent = ch === ' ' ? '\u00A0' : ch;
-    el.appendChild(s);
-    setTimeout(() => s.classList.add('in'), baseDelay + i * 55);
-  });
+// ── Cycling word animation ────────────────────────────────────────
+const WORDS = ['work', 'ship', 'last', 'matter', 'think'];
+let wordIdx   = 0;
+let charIdx   = 0;
+let isDeleting = false;
+const cycleEl  = document.getElementById('cycleWord');
+
+function cycleWord() {
+  const current = WORDS[wordIdx];
+
+  if (!isDeleting) {
+    // Typing
+    charIdx++;
+    cycleEl.textContent = current.slice(0, charIdx);
+
+    if (charIdx === current.length) {
+      // Fully typed — pause then delete
+      isDeleting = true;
+      setTimeout(cycleWord, 2400);
+      return;
+    }
+    setTimeout(cycleWord, 90);
+  } else {
+    // Deleting
+    charIdx--;
+    cycleEl.textContent = current.slice(0, charIdx);
+
+    if (charIdx === 0) {
+      // Fully deleted — move to next word
+      isDeleting = false;
+      wordIdx = (wordIdx + 1) % WORDS.length;
+      setTimeout(cycleWord, 260);
+      return;
+    }
+    setTimeout(cycleWord, 55);
+  }
 }
 
-lettersIn('hn-the',     300);
-lettersIn('hn-unknown', 600);
+// Start after hero animates in
+setTimeout(cycleWord, 1000);
 
 // ── Typewriter eyebrow ────────────────────────────────────────────
 const phrases = ['Full-Stack Developer', 'Algorithm Enthusiast', 'Building from scratch'];
@@ -101,14 +145,14 @@ function typewrite() {
   const cur = phrases[pi];
   if (!deleting) {
     twEl.textContent = cur.slice(0, ++ci);
-    if (ci === cur.length) { deleting = true; setTimeout(typewrite, 2000); return; }
+    if (ci === cur.length) { deleting = true; setTimeout(typewrite, 2200); return; }
   } else {
     twEl.textContent = cur.slice(0, --ci);
     if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
   }
-  setTimeout(typewrite, deleting ? 38 : 78);
+  setTimeout(typewrite, deleting ? 36 : 72);
 }
-setTimeout(typewrite, 500);
+setTimeout(typewrite, 600);
 
 // ── Nav scroll ────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
@@ -138,7 +182,7 @@ const so = new IntersectionObserver(entries => {
     so.unobserve(el);
   });
 }, { threshold: .5 });
-document.querySelectorAll('.stat-n').forEach(el => so.observe(el));
+document.querySelectorAll('.hstat-n').forEach(el => so.observe(el));
 
 // ── Card glow follow ──────────────────────────────────────────────
 document.querySelectorAll('.proj-card').forEach(card => {
@@ -152,7 +196,7 @@ document.querySelectorAll('.proj-card').forEach(card => {
 // ── Custom cursor ─────────────────────────────────────────────────
 const cur = document.createElement('div');
 const dot = document.createElement('div');
-cur.style.cssText = `position:fixed;width:28px;height:28px;border:1px solid #9d6fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .15s ease,background .2s,opacity .2s;opacity:0;`;
+cur.style.cssText = `position:fixed;width:26px;height:26px;border:1px solid rgba(157,111,255,.6);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .15s ease,background .2s,opacity .2s,width .2s,height .2s;opacity:0;`;
 dot.style.cssText = `position:fixed;width:4px;height:4px;background:#9d6fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:0;transition:opacity .2s;`;
 document.body.appendChild(cur);
 document.body.appendChild(dot);
@@ -169,9 +213,17 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(animCur);
 })();
 
-document.querySelectorAll('a, button, .proj-card, .chips span').forEach(el => {
-  el.addEventListener('mouseenter', () => { cur.style.transform = 'translate(-50%,-50%) scale(1.6)'; cur.style.background = '#9d6fff18'; });
-  el.addEventListener('mouseleave', () => { cur.style.transform = 'translate(-50%,-50%) scale(1)';   cur.style.background = 'transparent'; });
+document.querySelectorAll('a, button, .proj-card, .skill-pill').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cur.style.transform = 'translate(-50%,-50%) scale(1.6)';
+    cur.style.background = 'rgba(157,111,255,.1)';
+    cur.style.borderColor = 'rgba(157,111,255,1)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cur.style.transform = 'translate(-50%,-50%) scale(1)';
+    cur.style.background = 'transparent';
+    cur.style.borderColor = 'rgba(157,111,255,.6)';
+  });
 });
 
 // ── Smooth scroll ─────────────────────────────────────────────────
