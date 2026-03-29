@@ -1,26 +1,24 @@
 /* ─────────────────────────────────────────────────────────────
-   THEUNKNOWN  ·  Portfolio v2  ·  script.js
+   THEUNKNOWN  ·  Portfolio v3  ·  script.js
    ───────────────────────────────────────────────────────────── */
 'use strict';
 
-// ── Mouse spotlight ───────────────────────────────────────────────
+// ── Spotlight ────────────────────────────────────────────────────
 const spotlight = document.getElementById('spotlight');
 let sX = window.innerWidth / 2, sY = window.innerHeight / 2;
 let tX = sX, tY = sY;
 
-document.addEventListener('mousemove', e => {
-  tX = e.clientX; tY = e.clientY;
-});
+document.addEventListener('mousemove', e => { tX = e.clientX; tY = e.clientY; });
 
 (function animSpotlight() {
-  sX += (tX - sX) * 0.09;
-  sY += (tY - sY) * 0.09;
+  sX += (tX - sX) * 0.08;
+  sY += (tY - sY) * 0.08;
   spotlight.style.left = sX + 'px';
   spotlight.style.top  = sY + 'px';
   requestAnimationFrame(animSpotlight);
 })();
 
-// ── Particle canvas ───────────────────────────────────────────────
+// ── Particles ─────────────────────────────────────────────────────
 const canvas = document.getElementById('particle-canvas');
 const ctx    = canvas.getContext('2d');
 
@@ -35,11 +33,11 @@ let particles = [];
 function initParticles() {
   const count = Math.floor(window.innerWidth * window.innerHeight / 20000);
   particles = Array.from({ length: count }, () => ({
-    x:  Math.random() * canvas.width,
-    y:  Math.random() * canvas.height,
-    vx: (Math.random() - .5) * .22,
-    vy: (Math.random() - .5) * .22,
-    r:  Math.random() * 1.2 + .3,
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - .5) * .2,
+    vy: (Math.random() - .5) * .2,
+    r: Math.random() * 1.2 + .3,
   }));
 }
 initParticles();
@@ -47,11 +45,11 @@ initParticles();
 function drawParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Ambient glow blobs
+  // Ambient blobs
   [
-    { x: .12, y: .2,  r: 420, c: '#9d6fff' },
-    { x: .88, y: .7,  r: 360, c: '#7c3aed' },
-    { x: .5,  y: .95, r: 280, c: '#a78bfa' },
+    { x: .1,  y: .18, r: 420, c: '#9d6fff' },
+    { x: .9,  y: .72, r: 360, c: '#7c3aed' },
+    { x: .5,  y: .96, r: 280, c: '#a78bfa' },
   ].forEach(b => {
     const g = ctx.createRadialGradient(
       b.x * canvas.width, b.y * canvas.height, 0,
@@ -68,9 +66,9 @@ function drawParticles() {
     for (let j = i + 1; j < particles.length; j++) {
       const dx = particles[i].x - particles[j].x;
       const dy = particles[i].y - particles[j].y;
-      const d  = Math.sqrt(dx*dx + dy*dy);
+      const d  = Math.sqrt(dx * dx + dy * dy);
       if (d < 110) {
-        ctx.strokeStyle = `rgba(157,111,255,${(1 - d/110) * .12})`;
+        ctx.strokeStyle = `rgba(157,111,255,${(1 - d / 110) * .11})`;
         ctx.lineWidth = .5;
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
@@ -84,7 +82,7 @@ function drawParticles() {
   particles.forEach(p => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(157,111,255,.3)';
+    ctx.fillStyle = 'rgba(157,111,255,.28)';
     ctx.fill();
     p.x += p.vx; p.y += p.vy;
     if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
@@ -95,10 +93,10 @@ function drawParticles() {
 }
 drawParticles();
 
-// ── Cycling word animation ────────────────────────────────────────
-const WORDS = ['work', 'ship', 'last', 'matter', 'think'];
-let wordIdx   = 0;
-let charIdx   = 0;
+// ── Cycling word ──────────────────────────────────────────────────
+const WORDS    = ['work', 'ship', 'last', 'matter', 'think'];
+let wordIdx    = 0;
+let charIdx    = 0;
 let isDeleting = false;
 const cycleEl  = document.getElementById('cycleWord');
 
@@ -106,35 +104,27 @@ function cycleWord() {
   const current = WORDS[wordIdx];
 
   if (!isDeleting) {
-    // Typing
     charIdx++;
     cycleEl.textContent = current.slice(0, charIdx);
-
     if (charIdx === current.length) {
-      // Fully typed — pause then delete
       isDeleting = true;
       setTimeout(cycleWord, 2400);
       return;
     }
     setTimeout(cycleWord, 90);
   } else {
-    // Deleting
     charIdx--;
     cycleEl.textContent = current.slice(0, charIdx);
-
     if (charIdx === 0) {
-      // Fully deleted — move to next word
       isDeleting = false;
-      wordIdx = (wordIdx + 1) % WORDS.length;
+      wordIdx    = (wordIdx + 1) % WORDS.length;
       setTimeout(cycleWord, 260);
       return;
     }
-    setTimeout(cycleWord, 55);
+    setTimeout(cycleWord, 52);
   }
 }
-
-// Start after hero animates in
-setTimeout(cycleWord, 1000);
+setTimeout(cycleWord, 1200);
 
 // ── Typewriter eyebrow ────────────────────────────────────────────
 const phrases = ['Full-Stack Developer', 'Algorithm Enthusiast', 'Building from scratch'];
@@ -158,6 +148,97 @@ setTimeout(typewrite, 600);
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
+
+// ── Drag-to-browse track ──────────────────────────────────────────
+const dragOuter = document.querySelector('.drag-outer');
+const dragTrack = document.getElementById('dragTrack');
+
+let isDragging  = false;
+let dragStartX  = 0;
+let scrollStart = 0;
+let velocity    = 0;
+let lastX       = 0;
+let lastTime    = 0;
+let momentum    = null;
+
+function stopMomentum() {
+  if (momentum) { cancelAnimationFrame(momentum); momentum = null; }
+}
+
+dragOuter.addEventListener('mousedown', e => {
+  isDragging  = true;
+  dragStartX  = e.pageX;
+  scrollStart = dragOuter.scrollLeft;
+  velocity    = 0;
+  lastX       = e.pageX;
+  lastTime    = Date.now();
+  dragOuter.classList.add('dragging');
+  stopMomentum();
+});
+
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  const dx = e.pageX - dragStartX;
+  dragOuter.scrollLeft = scrollStart - dx;
+
+  const now = Date.now();
+  velocity  = (e.pageX - lastX) / (now - lastTime || 1);
+  lastX     = e.pageX;
+  lastTime  = now;
+});
+
+window.addEventListener('mouseup', () => {
+  if (!isDragging) return;
+  isDragging = false;
+  dragOuter.classList.remove('dragging');
+
+  // Momentum glide
+  let v = -velocity * 14;
+  function glide() {
+    if (Math.abs(v) < 0.5) return;
+    dragOuter.scrollLeft += v;
+    v *= 0.92;
+    momentum = requestAnimationFrame(glide);
+  }
+  glide();
+});
+
+// Touch support
+dragOuter.addEventListener('touchstart', e => {
+  dragStartX  = e.touches[0].pageX;
+  scrollStart = dragOuter.scrollLeft;
+  stopMomentum();
+}, { passive: true });
+
+dragOuter.addEventListener('touchmove', e => {
+  const dx = e.touches[0].pageX - dragStartX;
+  dragOuter.scrollLeft = scrollStart - dx;
+}, { passive: true });
+
+// Card glow
+document.querySelectorAll('.proj-card-h').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100) + '%');
+    card.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
+  });
+});
+
+// Prevent link clicks during drag
+let didDrag = false;
+dragOuter.addEventListener('mousedown', () => { didDrag = false; });
+window.addEventListener('mousemove',   () => { if (isDragging) didDrag = true; });
+dragOuter.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', e => { if (didDrag) e.preventDefault(); });
+});
+
+// ── Overflow hidden on drag-outer for scrollLeft to work ──────────
+dragOuter.style.overflowX = 'scroll';
+dragOuter.style.scrollbarWidth = 'none';  // Firefox
+dragOuter.style.msOverflowStyle = 'none'; // IE
+const styleEl = document.createElement('style');
+styleEl.textContent = '.drag-outer::-webkit-scrollbar { display: none; }';
+document.head.appendChild(styleEl);
 
 // ── Scroll reveal ─────────────────────────────────────────────────
 const ro = new IntersectionObserver(entries => {
@@ -184,20 +265,11 @@ const so = new IntersectionObserver(entries => {
 }, { threshold: .5 });
 document.querySelectorAll('.hstat-n').forEach(el => so.observe(el));
 
-// ── Card glow follow ──────────────────────────────────────────────
-document.querySelectorAll('.proj-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    card.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100) + '%');
-    card.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
-  });
-});
-
 // ── Custom cursor ─────────────────────────────────────────────────
 const cur = document.createElement('div');
 const dot = document.createElement('div');
-cur.style.cssText = `position:fixed;width:26px;height:26px;border:1px solid rgba(157,111,255,.6);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .15s ease,background .2s,opacity .2s,width .2s,height .2s;opacity:0;`;
-dot.style.cssText = `position:fixed;width:4px;height:4px;background:#9d6fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:0;transition:opacity .2s;`;
+cur.style.cssText = 'position:fixed;width:26px;height:26px;border:1px solid rgba(157,111,255,.6);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .15s ease,background .2s,opacity .2s;opacity:0;';
+dot.style.cssText = 'position:fixed;width:4px;height:4px;background:#9d6fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:0;transition:opacity .2s;';
 document.body.appendChild(cur);
 document.body.appendChild(dot);
 
@@ -213,7 +285,7 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(animCur);
 })();
 
-document.querySelectorAll('a, button, .proj-card, .skill-pill').forEach(el => {
+document.querySelectorAll('a, button, .proj-card-h, .skill-pill').forEach(el => {
   el.addEventListener('mouseenter', () => {
     cur.style.transform = 'translate(-50%,-50%) scale(1.6)';
     cur.style.background = 'rgba(157,111,255,.1)';
