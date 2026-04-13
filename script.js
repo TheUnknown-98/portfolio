@@ -2,14 +2,14 @@
    THEUNKNOWN  ·  Portfolio v3  ·  script.js
    ───────────────────────────────────────────────────────────── */
 'use strict';
-
+ 
 // ── Spotlight ────────────────────────────────────────────────────
 const spotlight = document.getElementById('spotlight');
 let sX = window.innerWidth / 2, sY = window.innerHeight / 2;
 let tX = sX, tY = sY;
-
+ 
 document.addEventListener('mousemove', e => { tX = e.clientX; tY = e.clientY; });
-
+ 
 (function animSpotlight() {
   sX += (tX - sX) * 0.08;
   sY += (tY - sY) * 0.08;
@@ -17,18 +17,18 @@ document.addEventListener('mousemove', e => { tX = e.clientX; tY = e.clientY; })
   spotlight.style.top  = sY + 'px';
   requestAnimationFrame(animSpotlight);
 })();
-
+ 
 // ── Particles ─────────────────────────────────────────────────────
 const canvas = document.getElementById('particle-canvas');
 const ctx    = canvas.getContext('2d');
-
+ 
 function resizeCanvas() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 resizeCanvas();
 window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
-
+ 
 let particles = [];
 function initParticles() {
   const count = Math.floor(window.innerWidth * window.innerHeight / 20000);
@@ -41,10 +41,10 @@ function initParticles() {
   }));
 }
 initParticles();
-
+ 
 function drawParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+ 
   // Ambient blobs
   [
     { x: .1,  y: .18, r: 420, c: '#9d6fff' },
@@ -60,7 +60,7 @@ function drawParticles() {
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   });
-
+ 
   // Connections
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
@@ -77,7 +77,7 @@ function drawParticles() {
       }
     }
   }
-
+ 
   // Dots
   particles.forEach(p => {
     ctx.beginPath();
@@ -88,21 +88,21 @@ function drawParticles() {
     if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
     if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
   });
-
+ 
   requestAnimationFrame(drawParticles);
 }
 drawParticles();
-
+ 
 // ── Cycling word ──────────────────────────────────────────────────
 const WORDS    = ['work', 'ship', 'last', 'matter', 'think'];
 let wordIdx    = 0;
 let charIdx    = 0;
 let isDeleting = false;
 const cycleEl  = document.getElementById('cycleWord');
-
+ 
 function cycleWord() {
   const current = WORDS[wordIdx];
-
+ 
   if (!isDeleting) {
     charIdx++;
     cycleEl.textContent = current.slice(0, charIdx);
@@ -125,12 +125,12 @@ function cycleWord() {
   }
 }
 setTimeout(cycleWord, 1200);
-
+ 
 // ── Typewriter eyebrow ────────────────────────────────────────────
 const phrases = ['Full-Stack Developer', 'Algorithm Enthusiast', 'Building from scratch'];
 let pi = 0, ci = 0, deleting = false;
 const twEl = document.getElementById('typewriter');
-
+ 
 function typewrite() {
   const cur = phrases[pi];
   if (!deleting) {
@@ -143,16 +143,16 @@ function typewrite() {
   setTimeout(typewrite, deleting ? 36 : 72);
 }
 setTimeout(typewrite, 600);
-
+ 
 // ── Nav scroll ────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
-
+ 
 // ── Drag-to-browse track ──────────────────────────────────────────
 const dragOuter = document.querySelector('.drag-outer');
 const dragTrack = document.getElementById('dragTrack');
-
+ 
 let isDragging  = false;
 let dragStartX  = 0;
 let scrollStart = 0;
@@ -160,11 +160,11 @@ let velocity    = 0;
 let lastX       = 0;
 let lastTime    = 0;
 let momentum    = null;
-
+ 
 function stopMomentum() {
   if (momentum) { cancelAnimationFrame(momentum); momentum = null; }
 }
-
+ 
 dragOuter.addEventListener('mousedown', e => {
   isDragging  = true;
   dragStartX  = e.pageX;
@@ -175,23 +175,23 @@ dragOuter.addEventListener('mousedown', e => {
   dragOuter.classList.add('dragging');
   stopMomentum();
 });
-
+ 
 window.addEventListener('mousemove', e => {
   if (!isDragging) return;
   const dx = e.pageX - dragStartX;
   dragOuter.scrollLeft = scrollStart - dx;
-
+ 
   const now = Date.now();
   velocity  = (e.pageX - lastX) / (now - lastTime || 1);
   lastX     = e.pageX;
   lastTime  = now;
 });
-
+ 
 window.addEventListener('mouseup', () => {
   if (!isDragging) return;
   isDragging = false;
   dragOuter.classList.remove('dragging');
-
+ 
   // Momentum glide
   let v = -velocity * 14;
   function glide() {
@@ -202,19 +202,19 @@ window.addEventListener('mouseup', () => {
   }
   glide();
 });
-
+ 
 // Touch support
 dragOuter.addEventListener('touchstart', e => {
   dragStartX  = e.touches[0].pageX;
   scrollStart = dragOuter.scrollLeft;
   stopMomentum();
 }, { passive: true });
-
+ 
 dragOuter.addEventListener('touchmove', e => {
   const dx = e.touches[0].pageX - dragStartX;
   dragOuter.scrollLeft = scrollStart - dx;
 }, { passive: true });
-
+ 
 // Card glow
 document.querySelectorAll('.proj-card-h').forEach(card => {
   card.addEventListener('mousemove', e => {
@@ -223,7 +223,7 @@ document.querySelectorAll('.proj-card-h').forEach(card => {
     card.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
   });
 });
-
+ 
 // Prevent link clicks during drag
 let didDrag = false;
 dragOuter.addEventListener('mousedown', () => { didDrag = false; });
@@ -231,7 +231,7 @@ window.addEventListener('mousemove',   () => { if (isDragging) didDrag = true; }
 dragOuter.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', e => { if (didDrag) e.preventDefault(); });
 });
-
+ 
 // ── Overflow hidden on drag-outer for scrollLeft to work ──────────
 dragOuter.style.overflowX = 'scroll';
 dragOuter.style.scrollbarWidth = 'none';  // Firefox
@@ -239,7 +239,7 @@ dragOuter.style.msOverflowStyle = 'none'; // IE
 const styleEl = document.createElement('style');
 styleEl.textContent = '.drag-outer::-webkit-scrollbar { display: none; }';
 document.head.appendChild(styleEl);
-
+ 
 // ── Scroll reveal ─────────────────────────────────────────────────
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -247,7 +247,7 @@ const ro = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
-
+ 
 // ── Count-up stats ────────────────────────────────────────────────
 const so = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -264,40 +264,60 @@ const so = new IntersectionObserver(entries => {
   });
 }, { threshold: .5 });
 document.querySelectorAll('.hstat-n').forEach(el => so.observe(el));
-
-// ── Custom cursor ─────────────────────────────────────────────────
-const cur = document.createElement('div');
-const dot = document.createElement('div');
-cur.style.cssText = 'position:fixed;width:26px;height:26px;border:1px solid rgba(157,111,255,.6);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .15s ease,background .2s,opacity .2s;opacity:0;';
-dot.style.cssText = 'position:fixed;width:4px;height:4px;background:#9d6fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:0;transition:opacity .2s;';
-document.body.appendChild(cur);
-document.body.appendChild(dot);
-
+ 
+// ── Custom cursor — soft glow blob ───────────────────────────────
+const blob = document.createElement('div');
+blob.style.cssText = `
+  position: fixed;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle, rgba(180,140,255,0.9) 0%, rgba(157,111,255,0.4) 45%, transparent 75%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  filter: blur(5px);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: width .35s cubic-bezier(.16,1,.3,1),
+              height .35s cubic-bezier(.16,1,.3,1),
+              opacity .3s ease,
+              filter .35s ease;
+  will-change: left, top, width, height;
+`;
+document.body.appendChild(blob);
+ 
 let mx = 0, my = 0, cx = 0, cy = 0;
+ 
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
-  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-  cur.style.opacity = dot.style.opacity = '1';
+  blob.style.opacity = '1';
 });
-(function animCur() {
-  cx += (mx - cx) * .1; cy += (my - cy) * .1;
-  cur.style.left = cx + 'px'; cur.style.top = cy + 'px';
-  requestAnimationFrame(animCur);
+ 
+document.addEventListener('mouseleave', () => { blob.style.opacity = '0'; });
+ 
+(function animBlob() {
+  cx += (mx - cx) * 0.12;
+  cy += (my - cy) * 0.12;
+  blob.style.left = cx + 'px';
+  blob.style.top  = cy + 'px';
+  requestAnimationFrame(animBlob);
 })();
-
+ 
+// Grow on hover over interactive elements
 document.querySelectorAll('a, button, .proj-card-h, .skill-pill').forEach(el => {
   el.addEventListener('mouseenter', () => {
-    cur.style.transform = 'translate(-50%,-50%) scale(1.6)';
-    cur.style.background = 'rgba(157,111,255,.1)';
-    cur.style.borderColor = 'rgba(157,111,255,1)';
+    blob.style.width  = '52px';
+    blob.style.height = '52px';
+    blob.style.filter = 'blur(12px)';
   });
   el.addEventListener('mouseleave', () => {
-    cur.style.transform = 'translate(-50%,-50%) scale(1)';
-    cur.style.background = 'transparent';
-    cur.style.borderColor = 'rgba(157,111,255,.6)';
+    blob.style.width  = '18px';
+    blob.style.height = '18px';
+    blob.style.filter = 'blur(5px)';
   });
 });
-
+ 
 // ── Smooth scroll ─────────────────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
@@ -305,3 +325,4 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
   });
 });
+ 
