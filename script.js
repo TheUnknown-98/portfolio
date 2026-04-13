@@ -265,56 +265,65 @@ const so = new IntersectionObserver(entries => {
 }, { threshold: .5 });
 document.querySelectorAll('.hstat-n').forEach(el => so.observe(el));
  
-// ── Custom cursor — soft glow blob ───────────────────────────────
-const blob = document.createElement('div');
-blob.style.cssText = `
-  position: fixed;
-  width: 18px;
-  height: 18px;
-  background: radial-gradient(circle, rgba(180,140,255,0.9) 0%, rgba(157,111,255,0.4) 45%, transparent 75%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  filter: blur(5px);
-  mix-blend-mode: screen;
-  opacity: 0;
-  transition: width .35s cubic-bezier(.16,1,.3,1),
-              height .35s cubic-bezier(.16,1,.3,1),
-              opacity .3s ease,
-              filter .35s ease;
-  will-change: left, top, width, height;
-`;
-document.body.appendChild(blob);
+// ── Custom cursor — comet tail ────────────────────────────────────
+const TAIL_COUNT = 6;
+const tail = Array.from({ length: TAIL_COUNT }, (_, i) => {
+  const el = document.createElement('div');
+  const scale = 1 - i * 0.13;
+  el.style.cssText = `
+    position: fixed;
+    width: ${8 * scale}px;
+    height: ${8 * scale}px;
+    background: rgba(${i === 0 ? '255,255,255' : '180,140,255'}, ${1 - i * 0.15});
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: ${9999 - i};
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity .3s ease;
+    will-change: left, top;
+  `;
+  document.body.appendChild(el);
+  return { el, x: 0, y: 0 };
+});
  
-let mx = 0, my = 0, cx = 0, cy = 0;
+let mx = 0, my = 0;
  
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
-  blob.style.opacity = '1';
+  tail.forEach(t => t.el.style.opacity = '1');
 });
  
-document.addEventListener('mouseleave', () => { blob.style.opacity = '0'; });
+document.addEventListener('mouseleave', () => {
+  tail.forEach(t => t.el.style.opacity = '0');
+});
  
-(function animBlob() {
-  cx += (mx - cx) * 0.12;
-  cy += (my - cy) * 0.12;
-  blob.style.left = cx + 'px';
-  blob.style.top  = cy + 'px';
-  requestAnimationFrame(animBlob);
+// Each dot chases the one ahead of it
+const LERPS = [0.28, 0.2, 0.15, 0.11, 0.08, 0.06];
+ 
+(function animTail() {
+  tail.forEach((t, i) => {
+    const targetX = i === 0 ? mx : tail[i - 1].x;
+    const targetY = i === 0 ? my : tail[i - 1].y;
+    t.x += (targetX - t.x) * LERPS[i];
+    t.y += (targetY - t.y) * LERPS[i];
+    t.el.style.left = t.x + 'px';
+    t.el.style.top  = t.y + 'px';
+  });
+  requestAnimationFrame(animTail);
 })();
  
-// Grow on hover over interactive elements
+// Grow head dot on hover
 document.querySelectorAll('a, button, .proj-card-h, .skill-pill').forEach(el => {
   el.addEventListener('mouseenter', () => {
-    blob.style.width  = '52px';
-    blob.style.height = '52px';
-    blob.style.filter = 'blur(12px)';
+    tail[0].el.style.width  = '14px';
+    tail[0].el.style.height = '14px';
+    tail[0].el.style.background = 'rgba(200,170,255,1)';
   });
   el.addEventListener('mouseleave', () => {
-    blob.style.width  = '18px';
-    blob.style.height = '18px';
-    blob.style.filter = 'blur(5px)';
+    tail[0].el.style.width  = '8px';
+    tail[0].el.style.height = '8px';
+    tail[0].el.style.background = 'rgba(255,255,255,1)';
   });
 });
  
