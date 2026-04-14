@@ -425,6 +425,9 @@ if (filtersWrap && projectCards.length) {
         const match = filter === 'all' || categories.includes(filter);
         card.classList.toggle('is-hidden', !match);
       });
+      if (dragOuter) {
+        dragOuter.scrollTo({ left: 0, behavior: 'smooth' });
+      }
     });
   });
 }
@@ -530,6 +533,8 @@ const tail = Array.from({ length: TAIL_COUNT }, (_, i) => {
 });
 
 let mx = 0, my = 0;
+let scrolling = false;
+let scrollTimer = null;
 
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
@@ -547,13 +552,19 @@ const LERPS = [0.28, 0.2, 0.15, 0.11, 0.08, 0.06];
   tail.forEach((t, i) => {
     const targetX = i === 0 ? mx : tail[i - 1].x;
     const targetY = i === 0 ? my : tail[i - 1].y;
-    t.x += (targetX - t.x) * LERPS[i];
-    t.y += (targetY - t.y) * LERPS[i];
-    t.el.style.left = t.x + 'px';
-    t.el.style.top  = t.y + 'px';
+    const factor = scrolling ? LERPS[i] * 0.62 : LERPS[i];
+    t.x += (targetX - t.x) * factor;
+    t.y += (targetY - t.y) * factor;
+    t.el.style.transform = `translate3d(${t.x}px, ${t.y}px, 0) translate(-50%, -50%)`;
   });
   requestAnimationFrame(animTail);
 })();
+
+window.addEventListener('scroll', () => {
+  scrolling = true;
+  if (scrollTimer) clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => { scrolling = false; }, 120);
+}, { passive: true });
 
 // Grow head dot on hover
 document.querySelectorAll('a, button, .proj-card-h, .skill-pill').forEach(el => {
@@ -575,4 +586,23 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     e.preventDefault();
     document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
   });
+});
+
+// ── Spacebar jump navigation ──────────────────────────────────────
+const jumpSections = ['hero', 'projects', 'case-study', 'about', 'thinking', 'contact']
+  .map(id => document.getElementById(id))
+  .filter(Boolean);
+
+document.addEventListener('keydown', e => {
+  if (e.code !== 'Space') return;
+  const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+  const typing = tag === 'input' || tag === 'textarea' || (e.target && e.target.isContentEditable);
+  if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+  e.preventDefault();
+
+  if (!jumpSections.length) return;
+  const marker = window.scrollY + window.innerHeight * 0.28;
+  let next = jumpSections.find(section => section.offsetTop > marker);
+  if (!next) next = jumpSections[0];
+  next.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
