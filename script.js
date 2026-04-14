@@ -536,12 +536,15 @@ let mx = 0, my = 0;
 let scrolling = false;
 let scrollTimer = null;
 
-document.addEventListener('mousemove', e => {
+mx = window.innerWidth * 0.5;
+my = window.innerHeight * 0.5;
+
+document.addEventListener('pointermove', e => {
   mx = e.clientX; my = e.clientY;
   tail.forEach(t => t.el.style.opacity = '1');
 });
 
-document.addEventListener('mouseleave', () => {
+document.addEventListener('pointerleave', () => {
   tail.forEach(t => t.el.style.opacity = '0');
 });
 
@@ -555,7 +558,8 @@ const LERPS = [0.28, 0.2, 0.15, 0.11, 0.08, 0.06];
     const factor = scrolling ? LERPS[i] * 0.62 : LERPS[i];
     t.x += (targetX - t.x) * factor;
     t.y += (targetY - t.y) * factor;
-    t.el.style.transform = `translate3d(${t.x}px, ${t.y}px, 0) translate(-50%, -50%)`;
+    t.el.style.left = t.x + 'px';
+    t.el.style.top  = t.y + 'px';
   });
   requestAnimationFrame(animTail);
 })();

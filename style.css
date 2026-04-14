@@ -798,9 +798,12 @@ a { color: inherit; text-decoration: none; }
   display: flex; flex-direction: column; align-items: flex-start;
   gap: 16px; position: relative;
 }
-.contact-arrow { width: 120px; height: 60px; position: absolute; top: -50px; left: 20px; }
 .contact-arrow {
-  left: 64px;
+  width: 120px;
+  height: 60px;
+  position: absolute;
+  top: -48px;
+  left: 50%;
   transform: translateX(-50%);
 }
 .contact-email-pill {
