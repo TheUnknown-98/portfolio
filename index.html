@@ -46,6 +46,12 @@
       Algorithms, interfaces, and everything<br />in between — built from scratch.
     </p>
 
+    <!-- Micro now status -->
+    <div class="now-pill reveal">
+      <span class="now-label">Now</span>
+      <span class="now-text">Building a graph visualizer + improving frontend performance.</span>
+    </div>
+
     <!-- Fragment 3: lower-left -->
     <span class="frag frag-3">that</span>
 
@@ -151,6 +157,26 @@
 
   </div>
 
+  <!-- ── Performance + Quality Strip ── -->
+  <section id="quality-strip" class="reveal">
+    <div class="quality-item">
+      <span class="quality-n">95+</span>
+      <span class="quality-l">Lighthouse Performance</span>
+    </div>
+    <div class="quality-item">
+      <span class="quality-n">100</span>
+      <span class="quality-l">Accessibility Baseline</span>
+    </div>
+    <div class="quality-item">
+      <span class="quality-n">&lt; 100KB</span>
+      <span class="quality-l">Core Static Payload</span>
+    </div>
+    <div class="quality-item">
+      <span class="quality-n">0</span>
+      <span class="quality-l">Runtime Dependencies</span>
+    </div>
+  </section>
+
   <!-- ── Projects — drag to browse ── -->
   <section id="projects">
     <div class="sec-head reveal">
@@ -231,6 +257,36 @@
     </div>
   </section>
 
+  <!-- ── Case Study ── -->
+  <section id="case-study">
+    <div class="sec-head reveal">
+      <span class="sec-label">/ Case Study</span>
+      <h2 class="sec-title">Pathfinder Visualizer — from idea to shipped tool</h2>
+    </div>
+    <div class="case-grid">
+      <article class="case-card reveal">
+        <h3>Problem</h3>
+        <p>Most algorithm demos feel static and disconnected from how people actually learn. I wanted a tool that makes tradeoffs visible in real time, not just final output.</p>
+      </article>
+      <article class="case-card reveal">
+        <h3>Approach</h3>
+        <p>Built a grid engine with step-wise animation controls, weighted node support, and a consistent interface for BFS, DFS, Dijkstra, and A* so behavior differences are obvious.</p>
+      </article>
+      <article class="case-card reveal">
+        <h3>Key Tradeoff</h3>
+        <p>Prioritized frame stability over ultra-fine visual effects. That kept interactions responsive while still preserving algorithm clarity during rapid updates.</p>
+      </article>
+      <article class="case-card reveal">
+        <h3>Outcome</h3>
+        <p>A practical learning tool that lets users draw walls, generate mazes, and compare algorithms side-by-side with immediate visual feedback and stats.</p>
+      </article>
+    </div>
+    <div class="case-actions reveal">
+      <a href="https://theunknown-98.github.io/pathfinder-visualizer" target="_blank" class="btn-primary">Open Live Demo</a>
+      <a href="https://github.com/TheUnknown-98/pathfinder-visualizer" target="_blank" class="btn-ghost">Read Source ↗</a>
+    </div>
+  </section>
+
   <!-- ── About ── -->
   <section id="about">
     <div class="sec-head reveal">
@@ -253,6 +309,28 @@
         <span class="skill-pill">Data Structures</span>
         <span class="skill-pill">Full-Stack</span>
       </div>
+    </div>
+  </section>
+
+  <!-- ── How I Think ── -->
+  <section id="thinking">
+    <div class="sec-head reveal">
+      <span class="sec-label">/ How I Think</span>
+      <h2 class="sec-title">Principles behind my builds</h2>
+    </div>
+    <div class="thinking-grid">
+      <article class="thinking-card reveal">
+        <h3>Fundamentals first</h3>
+        <p>I start with data structures, state shape, and algorithmic constraints before styling and framework abstractions.</p>
+      </article>
+      <article class="thinking-card reveal">
+        <h3>Ship, then sharpen</h3>
+        <p>I prefer delivering a clean functional version early, then iterating with measurable improvements instead of polishing in isolation.</p>
+      </article>
+      <article class="thinking-card reveal">
+        <h3>Measure over guesswork</h3>
+        <p>Performance and UX choices are validated through profiling, not assumptions, so improvements are intentional and repeatable.</p>
+      </article>
     </div>
   </section>
 
