@@ -2,14 +2,14 @@
    THEUNKNOWN  ·  Portfolio v3  ·  script.js
    ───────────────────────────────────────────────────────────── */
 'use strict';
- 
+
 // ── Spotlight ────────────────────────────────────────────────────
 const spotlight = document.getElementById('spotlight');
 let sX = window.innerWidth / 2, sY = window.innerHeight / 2;
 let tX = sX, tY = sY;
- 
+
 document.addEventListener('mousemove', e => { tX = e.clientX; tY = e.clientY; });
- 
+
 (function animSpotlight() {
   sX += (tX - sX) * 0.08;
   sY += (tY - sY) * 0.08;
@@ -17,18 +17,18 @@ document.addEventListener('mousemove', e => { tX = e.clientX; tY = e.clientY; })
   spotlight.style.top  = sY + 'px';
   requestAnimationFrame(animSpotlight);
 })();
- 
+
 // ── Topographic contour background ───────────────────────────────
 const topoCanvas = document.getElementById('topo-canvas');
 const topoCtx    = topoCanvas.getContext('2d');
- 
+
 function resizeTopo() {
   topoCanvas.width  = window.innerWidth;
   topoCanvas.height = window.innerHeight;
 }
 resizeTopo();
 window.addEventListener('resize', resizeTopo);
- 
+
 // Scalar field: sum of sine waves at different frequencies + phases
 function field(x, y, t) {
   const nx = x / topoCanvas.width;
@@ -41,7 +41,7 @@ function field(x, y, t) {
     Math.cos(nx * 5.5 + ny * 3.8 - t * 0.09) * 0.4
   );
 }
- 
+
 // Contour levels and their colors (purple → blue spectrum)
 const CONTOURS = [
   { level: -1.6, color: 'rgba(100, 40, 200, 0.40)' },
@@ -59,23 +59,23 @@ const CONTOURS = [
   { level:  0.9, color: 'rgba(130, 70,230, 0.45)' },
   { level: -1.0, color: 'rgba( 90,140,255, 0.45)' },
 ];
- 
+
 const STEP = 8; // sample resolution — lower = finer but heavier
- 
+
 let topoT = 0;
- 
+
 function drawTopo() {
   topoCtx.clearRect(0, 0, topoCanvas.width, topoCanvas.height);
- 
+
   // Dark base
   topoCtx.fillStyle = '#09061a';
   topoCtx.fillRect(0, 0, topoCanvas.width, topoCanvas.height);
- 
+
   const W = topoCanvas.width;
   const H = topoCanvas.height;
   const cols = Math.ceil(W / STEP) + 1;
   const rows = Math.ceil(H / STEP) + 1;
- 
+
   // Pre-compute field grid
   const grid = [];
   for (let r = 0; r < rows; r++) {
@@ -84,7 +84,7 @@ function drawTopo() {
       grid[r][c] = field(c * STEP, r * STEP, topoT);
     }
   }
- 
+
   // Marching squares — for each contour level trace iso-lines
   CONTOURS.forEach(({ level, color }) => {
     topoCtx.beginPath();
@@ -92,38 +92,38 @@ function drawTopo() {
     topoCtx.lineWidth   = 1;
     topoCtx.lineCap     = 'round';
     topoCtx.lineJoin    = 'round';
- 
+
     for (let r = 0; r < rows - 1; r++) {
       for (let c = 0; c < cols - 1; c++) {
         const x0 = c * STEP, y0 = r * STEP;
         const x1 = x0 + STEP, y1 = y0 + STEP;
- 
+
         const v00 = grid[r][c];
         const v10 = grid[r][c + 1];
         const v01 = grid[r + 1][c];
         const v11 = grid[r + 1][c + 1];
- 
+
         // Interpolation helper
         function interp(a, b, va, vb) {
           if (Math.abs(vb - va) < 0.0001) return a;
           return a + (level - va) / (vb - va) * (b - a);
         }
- 
+
         // Which corners are above the level?
         const idx =
           (v00 > level ? 1 : 0) |
           (v10 > level ? 2 : 0) |
           (v11 > level ? 4 : 0) |
           (v01 > level ? 8 : 0);
- 
+
         if (idx === 0 || idx === 15) continue;
- 
+
         // Edge midpoints
         const top    = { x: interp(x0, x1, v00, v10), y: y0 };
         const right  = { x: x1, y: interp(y0, y1, v10, v11) };
         const bottom = { x: interp(x0, x1, v01, v11), y: y1 };
         const left   = { x: x0, y: interp(y0, y1, v00, v01) };
- 
+
         // All 16 marching squares cases → line segments
         const cases = {
           1:  [left,   top   ],
@@ -141,10 +141,10 @@ function drawTopo() {
           13: [right,  top   ],
           14: [left,   top   ],
         };
- 
+
         const seg = cases[idx];
         if (!seg) continue;
- 
+
         if (seg.length === 2) {
           topoCtx.moveTo(seg[0].x, seg[0].y);
           topoCtx.lineTo(seg[1].x, seg[1].y);
@@ -159,23 +159,23 @@ function drawTopo() {
     }
     topoCtx.stroke();
   });
- 
+
   topoT += 0.004; // animation speed — very slow drift
   requestAnimationFrame(drawTopo);
 }
 drawTopo();
- 
+
 // ── Particles ─────────────────────────────────────────────────────
 const canvas = document.getElementById('particle-canvas');
 const ctx    = canvas.getContext('2d');
- 
+
 function resizeCanvas() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 resizeCanvas();
 window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
- 
+
 let particles = [];
 function initParticles() {
   const count = Math.floor(window.innerWidth * window.innerHeight / 20000);
@@ -188,10 +188,10 @@ function initParticles() {
   }));
 }
 initParticles();
- 
+
 function drawParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
- 
+
   // Ambient blobs
   [
     { x: .1,  y: .18, r: 420, c: '#9d6fff' },
@@ -207,7 +207,7 @@ function drawParticles() {
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   });
- 
+
   // Connections
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
@@ -224,7 +224,7 @@ function drawParticles() {
       }
     }
   }
- 
+
   // Dots
   particles.forEach(p => {
     ctx.beginPath();
@@ -235,25 +235,25 @@ function drawParticles() {
     if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
     if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
   });
- 
+
   requestAnimationFrame(drawParticles);
 }
 drawParticles();
- 
+
 // ── Cycling word ──────────────────────────────────────────────────
 const WORDS    = ['work', 'ship', 'last', 'matter', 'think'];
 let wordIdx    = 0;
 let charIdx    = 0;
 let isDeleting = false;
 const cycleEl  = document.getElementById('cycleWord');
- 
+
 // Show first word immediately so frag-4 is never empty
 cycleEl.textContent = WORDS[0];
 charIdx = WORDS[0].length;
- 
+
 function cycleWord() {
   const current = WORDS[wordIdx];
- 
+
   if (!isDeleting) {
     charIdx++;
     cycleEl.textContent = current.slice(0, charIdx);
@@ -276,12 +276,12 @@ function cycleWord() {
   }
 }
 setTimeout(cycleWord, 1200);
- 
+
 // ── Typewriter eyebrow ────────────────────────────────────────────
 const phrases = ['Full-Stack Developer', 'Algorithm Enthusiast', 'Building from scratch'];
 let pi = 0, ci = 0, deleting = false;
 const twEl = document.getElementById('typewriter');
- 
+
 function typewrite() {
   const cur = phrases[pi];
   if (!deleting) {
@@ -294,16 +294,16 @@ function typewrite() {
   setTimeout(typewrite, deleting ? 36 : 72);
 }
 setTimeout(typewrite, 600);
- 
+
 // ── Nav scroll ────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
- 
+
 // ── Drag-to-browse track ──────────────────────────────────────────
 const dragOuter = document.querySelector('.drag-outer');
 const dragTrack = document.getElementById('dragTrack');
- 
+
 let isDragging  = false;
 let dragStartX  = 0;
 let scrollStart = 0;
@@ -311,11 +311,11 @@ let velocity    = 0;
 let lastX       = 0;
 let lastTime    = 0;
 let momentum    = null;
- 
+
 function stopMomentum() {
   if (momentum) { cancelAnimationFrame(momentum); momentum = null; }
 }
- 
+
 dragOuter.addEventListener('mousedown', e => {
   isDragging  = true;
   dragStartX  = e.pageX;
@@ -326,23 +326,23 @@ dragOuter.addEventListener('mousedown', e => {
   dragOuter.classList.add('dragging');
   stopMomentum();
 });
- 
+
 window.addEventListener('mousemove', e => {
   if (!isDragging) return;
   const dx = e.pageX - dragStartX;
   dragOuter.scrollLeft = scrollStart - dx;
- 
+
   const now = Date.now();
   velocity  = (e.pageX - lastX) / (now - lastTime || 1);
   lastX     = e.pageX;
   lastTime  = now;
 });
- 
+
 window.addEventListener('mouseup', () => {
   if (!isDragging) return;
   isDragging = false;
   dragOuter.classList.remove('dragging');
- 
+
   // Momentum glide
   let v = -velocity * 14;
   function glide() {
@@ -353,19 +353,19 @@ window.addEventListener('mouseup', () => {
   }
   glide();
 });
- 
+
 // Touch support
 dragOuter.addEventListener('touchstart', e => {
   dragStartX  = e.touches[0].pageX;
   scrollStart = dragOuter.scrollLeft;
   stopMomentum();
 }, { passive: true });
- 
+
 dragOuter.addEventListener('touchmove', e => {
   const dx = e.touches[0].pageX - dragStartX;
   dragOuter.scrollLeft = scrollStart - dx;
 }, { passive: true });
- 
+
 // Card glow
 document.querySelectorAll('.proj-card-h').forEach(card => {
   card.addEventListener('mousemove', e => {
@@ -374,7 +374,7 @@ document.querySelectorAll('.proj-card-h').forEach(card => {
     card.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
   });
 });
- 
+
 // Prevent link clicks during drag
 let didDrag = false;
 dragOuter.addEventListener('mousedown', () => { didDrag = false; });
@@ -382,7 +382,7 @@ window.addEventListener('mousemove',   () => { if (isDragging) didDrag = true; }
 dragOuter.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', e => { if (didDrag) e.preventDefault(); });
 });
- 
+
 // ── Overflow hidden on drag-outer for scrollLeft to work ──────────
 dragOuter.style.overflowX = 'scroll';
 dragOuter.style.scrollbarWidth = 'none';  // Firefox
@@ -390,7 +390,7 @@ dragOuter.style.msOverflowStyle = 'none'; // IE
 const styleEl = document.createElement('style');
 styleEl.textContent = '.drag-outer::-webkit-scrollbar { display: none; }';
 document.head.appendChild(styleEl);
- 
+
 // ── Scroll reveal ─────────────────────────────────────────────────
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -398,7 +398,7 @@ const ro = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
- 
+
 // ── Count-up stats ────────────────────────────────────────────────
 const so = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -415,7 +415,7 @@ const so = new IntersectionObserver(entries => {
   });
 }, { threshold: 0 });
 document.querySelectorAll('.hstat-n').forEach(el => so.observe(el));
- 
+
 // ── Custom cursor — comet tail ────────────────────────────────────
 const TAIL_COUNT = 6;
 const tail = Array.from({ length: TAIL_COUNT }, (_, i) => {
@@ -437,21 +437,21 @@ const tail = Array.from({ length: TAIL_COUNT }, (_, i) => {
   document.body.appendChild(el);
   return { el, x: 0, y: 0 };
 });
- 
+
 let mx = 0, my = 0;
- 
+
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
   tail.forEach(t => t.el.style.opacity = '1');
 });
- 
+
 document.addEventListener('mouseleave', () => {
   tail.forEach(t => t.el.style.opacity = '0');
 });
- 
+
 // Each dot chases the one ahead of it
 const LERPS = [0.28, 0.2, 0.15, 0.11, 0.08, 0.06];
- 
+
 (function animTail() {
   tail.forEach((t, i) => {
     const targetX = i === 0 ? mx : tail[i - 1].x;
@@ -463,7 +463,7 @@ const LERPS = [0.28, 0.2, 0.15, 0.11, 0.08, 0.06];
   });
   requestAnimationFrame(animTail);
 })();
- 
+
 // Grow head dot on hover
 document.querySelectorAll('a, button, .proj-card-h, .skill-pill').forEach(el => {
   el.addEventListener('mouseenter', () => {
@@ -477,7 +477,7 @@ document.querySelectorAll('a, button, .proj-card-h, .skill-pill').forEach(el => 
     tail[0].el.style.background = 'rgba(255,255,255,1)';
   });
 });
- 
+
 // ── Smooth scroll ─────────────────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
@@ -485,4 +485,3 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
   });
 });
- 
