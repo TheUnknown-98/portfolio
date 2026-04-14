@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — TheUnknown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #09061a;
+      --surface: #100c24;
+      --border: #1e1840;
+      --text: #ece8ff;
+      --muted: #4a4470;
+      --accent: #9d6fff;
+      --soft: #c4b5fd;
+      --mono: 'DM Mono', monospace;
+      --head: 'Syne', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(1000px circle at 20% 20%, rgba(157,111,255,.08), transparent 45%), var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      padding: 24px;
+    }
+    .notfound {
+      width: min(720px, 100%);
+      border: 1px solid var(--border);
+      background: rgba(16,12,36,.72);
+      padding: 34px;
+      display: grid;
+      gap: 14px;
+    }
+    .code {
+      font-size: .66rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    h1 {
+      font-family: var(--head);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      letter-spacing: -1px;
+      line-height: 1.05;
+    }
+    p {
+      color: var(--muted);
+      font-size: .78rem;
+      line-height: 1.9;
+      max-width: 56ch;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .btn {
+      border: 1px solid var(--border);
+      color: var(--muted);
+      text-decoration: none;
+      padding: 10px 16px;
+      font-size: .62rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: .2s;
+    }
+    .btn:hover { border-color: var(--accent); color: var(--soft); }
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #09061a;
+    }
+    .btn-primary:hover { background: var(--soft); color: #09061a; }
+  </style>
+</head>
+<body>
+  <main class="notfound">
+    <span class="code">Error 404</span>
+    <h1>This route is not built yet.</h1>
+    <p>The page you requested does not exist or was moved. Head back to the portfolio and continue exploring shipped work.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/">Go Home</a>
+      <a class="btn" href="https://github.com/TheUnknown-98" target="_blank">GitHub ↗</a>
+    </div>
+  </main>
+</body>
+</html>

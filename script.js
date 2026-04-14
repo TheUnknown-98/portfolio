@@ -241,7 +241,20 @@ function drawParticles() {
 drawParticles();
 
 // ── Cycling word ──────────────────────────────────────────────────
-const WORDS    = ['work', 'ship', 'last', 'matter', 'think'];
+const WORDS    = [
+  'work',
+  'ship',
+  'last',
+  'matter',
+  'scale',
+  'perform',
+  'solve',
+  'teach',
+  'evolve',
+  'delight',
+  'improve',
+  'impact'
+];
 let wordIdx    = 0;
 let charIdx    = 0;
 let isDeleting = false;
@@ -316,55 +329,57 @@ function stopMomentum() {
   if (momentum) { cancelAnimationFrame(momentum); momentum = null; }
 }
 
-dragOuter.addEventListener('mousedown', e => {
-  isDragging  = true;
-  dragStartX  = e.pageX;
-  scrollStart = dragOuter.scrollLeft;
-  velocity    = 0;
-  lastX       = e.pageX;
-  lastTime    = Date.now();
-  dragOuter.classList.add('dragging');
-  stopMomentum();
-});
+if (dragOuter) {
+  dragOuter.addEventListener('mousedown', e => {
+    isDragging  = true;
+    dragStartX  = e.pageX;
+    scrollStart = dragOuter.scrollLeft;
+    velocity    = 0;
+    lastX       = e.pageX;
+    lastTime    = Date.now();
+    dragOuter.classList.add('dragging');
+    stopMomentum();
+  });
 
-window.addEventListener('mousemove', e => {
-  if (!isDragging) return;
-  const dx = e.pageX - dragStartX;
-  dragOuter.scrollLeft = scrollStart - dx;
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const dx = e.pageX - dragStartX;
+    dragOuter.scrollLeft = scrollStart - dx;
 
-  const now = Date.now();
-  velocity  = (e.pageX - lastX) / (now - lastTime || 1);
-  lastX     = e.pageX;
-  lastTime  = now;
-});
+    const now = Date.now();
+    velocity  = (e.pageX - lastX) / (now - lastTime || 1);
+    lastX     = e.pageX;
+    lastTime  = now;
+  });
 
-window.addEventListener('mouseup', () => {
-  if (!isDragging) return;
-  isDragging = false;
-  dragOuter.classList.remove('dragging');
+  window.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    dragOuter.classList.remove('dragging');
 
-  // Momentum glide
-  let v = -velocity * 14;
-  function glide() {
-    if (Math.abs(v) < 0.5) return;
-    dragOuter.scrollLeft += v;
-    v *= 0.92;
-    momentum = requestAnimationFrame(glide);
-  }
-  glide();
-});
+    // Momentum glide
+    let v = -velocity * 14;
+    function glide() {
+      if (Math.abs(v) < 0.5) return;
+      dragOuter.scrollLeft += v;
+      v *= 0.92;
+      momentum = requestAnimationFrame(glide);
+    }
+    glide();
+  });
 
-// Touch support
-dragOuter.addEventListener('touchstart', e => {
-  dragStartX  = e.touches[0].pageX;
-  scrollStart = dragOuter.scrollLeft;
-  stopMomentum();
-}, { passive: true });
+  // Touch support
+  dragOuter.addEventListener('touchstart', e => {
+    dragStartX  = e.touches[0].pageX;
+    scrollStart = dragOuter.scrollLeft;
+    stopMomentum();
+  }, { passive: true });
 
-dragOuter.addEventListener('touchmove', e => {
-  const dx = e.touches[0].pageX - dragStartX;
-  dragOuter.scrollLeft = scrollStart - dx;
-}, { passive: true });
+  dragOuter.addEventListener('touchmove', e => {
+    const dx = e.touches[0].pageX - dragStartX;
+    dragOuter.scrollLeft = scrollStart - dx;
+  }, { passive: true });
+}
 
 // Card glow
 document.querySelectorAll('.proj-card-h').forEach(card => {
@@ -377,19 +392,95 @@ document.querySelectorAll('.proj-card-h').forEach(card => {
 
 // Prevent link clicks during drag
 let didDrag = false;
-dragOuter.addEventListener('mousedown', () => { didDrag = false; });
-window.addEventListener('mousemove',   () => { if (isDragging) didDrag = true; });
-dragOuter.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', e => { if (didDrag) e.preventDefault(); });
-});
+if (dragOuter) {
+  dragOuter.addEventListener('mousedown', () => { didDrag = false; });
+  window.addEventListener('mousemove',   () => { if (isDragging) didDrag = true; });
+  dragOuter.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => { if (didDrag) e.preventDefault(); });
+  });
+}
 
 // ── Overflow hidden on drag-outer for scrollLeft to work ──────────
-dragOuter.style.overflowX = 'scroll';
-dragOuter.style.scrollbarWidth = 'none';  // Firefox
-dragOuter.style.msOverflowStyle = 'none'; // IE
-const styleEl = document.createElement('style');
-styleEl.textContent = '.drag-outer::-webkit-scrollbar { display: none; }';
-document.head.appendChild(styleEl);
+if (dragOuter) {
+  dragOuter.style.overflowX = 'scroll';
+  dragOuter.style.scrollbarWidth = 'none';  // Firefox
+  dragOuter.style.msOverflowStyle = 'none'; // IE
+  const styleEl = document.createElement('style');
+  styleEl.textContent = '.drag-outer::-webkit-scrollbar { display: none; }';
+  document.head.appendChild(styleEl);
+}
+
+// ── Project filters ───────────────────────────────────────────────
+const filtersWrap = document.getElementById('projectFilters');
+const projectCards = Array.from(document.querySelectorAll('.proj-card-h[data-category]'));
+if (filtersWrap && projectCards.length) {
+  filtersWrap.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.filter;
+      filtersWrap.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+
+      projectCards.forEach(card => {
+        const categories = (card.dataset.category || '').split(' ');
+        const match = filter === 'all' || categories.includes(filter);
+        card.classList.toggle('is-hidden', !match);
+      });
+    });
+  });
+}
+
+// ── Architecture modal ────────────────────────────────────────────
+const ARCH_DATA = {
+  pathfinder: {
+    title: 'Pathfinder Visualizer',
+    summary: 'Interactive grid architecture built around deterministic animation ticks and isolated algorithm modules.',
+    flow: 'Grid state -> algorithm queue -> animation scheduler -> DOM paint + metrics',
+    note: 'Tradeoff: chose simpler rendering and predictable state updates over heavy visuals to keep interaction smooth.'
+  },
+  snap: {
+    title: 'Snap Decision',
+    summary: 'Lightweight decision engine that maps three behavioral prompts into weighted confidence signals.',
+    flow: 'Question inputs -> scoring map -> confidence buckets -> final recommendation',
+    note: 'Tradeoff: optimized for clarity and speed of completion, minimizing extra UI branches.'
+  }
+};
+
+const archModal = document.getElementById('archModal');
+const archTitle = document.getElementById('archTitle');
+const archSummary = document.getElementById('archSummary');
+const archFlow = document.getElementById('archFlow');
+const archNote = document.getElementById('archNote');
+const archClose = document.getElementById('archClose');
+
+function closeArchModal() {
+  if (!archModal) return;
+  archModal.classList.remove('is-open');
+  archModal.setAttribute('aria-hidden', 'true');
+}
+
+if (archModal && archTitle && archSummary && archFlow && archNote) {
+  document.querySelectorAll('.arch-link').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.arch;
+      const data = ARCH_DATA[key];
+      if (!data) return;
+      archTitle.textContent = data.title;
+      archSummary.textContent = data.summary;
+      archFlow.textContent = data.flow;
+      archNote.textContent = data.note;
+      archModal.classList.add('is-open');
+      archModal.setAttribute('aria-hidden', 'false');
+    });
+  });
+
+  archModal.querySelectorAll('[data-close-modal="true"]').forEach(el => {
+    el.addEventListener('click', closeArchModal);
+  });
+  if (archClose) archClose.addEventListener('click', closeArchModal);
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeArchModal();
+  });
+}
 
 // ── Scroll reveal ─────────────────────────────────────────────────
 const ro = new IntersectionObserver(entries => {

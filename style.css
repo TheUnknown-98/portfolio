@@ -379,6 +379,38 @@ a { color: inherit; text-decoration: none; }
   padding-right: 60px;
 }
 
+.project-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-right: 60px;
+  margin: -18px 0 20px;
+}
+
+.filter-chip {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: .56rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+
+.filter-chip:hover {
+  border-color: var(--accent);
+  color: var(--soft);
+}
+
+.filter-chip.is-active {
+  background: var(--dim);
+  color: var(--soft);
+  border-color: var(--accent);
+}
+
 /* Drag outer: clips the track */
 .drag-outer {
   overflow: hidden;
@@ -458,6 +490,15 @@ a { color: inherit; text-decoration: none; }
   font-size: .78rem; color: var(--muted); line-height: 1.9;
 }
 
+.project-metric {
+  font-size: .62rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--soft);
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+}
+
 .card-h-feats {
   list-style: none;
   display: flex; flex-direction: column; gap: 7px;
@@ -485,12 +526,28 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase; color: #2a2050;
 }
 .card-links { display: flex; gap: 16px; }
-.card-links a {
+.card-links a, .arch-link {
   font-size: .65rem; letter-spacing: 1px; color: var(--muted);
   border-bottom: 1px solid transparent; padding-bottom: 1px;
   transition: color .2s, border-color .2s;
 }
-.card-links a:hover { color: var(--soft); border-color: var(--accent); }
+.card-links a:hover, .arch-link:hover { color: var(--soft); border-color: var(--accent); }
+
+.arch-link {
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: var(--mono);
+  cursor: pointer;
+  padding: 0 0 1px;
+}
+
+.proj-card-h.is-hidden {
+  opacity: .18;
+  pointer-events: none;
+  transform: scale(.985);
+}
 
 /* "Coming soon" placeholder card */
 .proj-card-h--soon {
@@ -512,6 +569,72 @@ a { color: inherit; text-decoration: none; }
   font-size: .72rem; letter-spacing: 1px; color: #221e3e; line-height: 1.8;
 }
 @keyframes hint-pulse { 0%,100%{opacity:.2;color:#221e3e} 50%{opacity:1;color:var(--muted)} }
+
+/* Architecture modal */
+.arch-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+
+.arch-modal.is-open { display: flex; }
+
+.arch-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 5, 16, .78);
+  backdrop-filter: blur(4px);
+}
+
+.arch-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(720px, 92vw);
+  border: 1px solid var(--border);
+  background: #0f0b22;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.arch-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.arch-close:hover { color: var(--soft); }
+
+.arch-title {
+  font-family: var(--head);
+  font-size: 1.4rem;
+  color: var(--text);
+}
+
+.arch-summary, .arch-note {
+  font-size: .72rem;
+  line-height: 1.9;
+  color: var(--muted);
+}
+
+.arch-flow {
+  border: 1px dashed var(--border);
+  background: rgba(16,12,36,.55);
+  padding: 14px;
+  font-size: .66rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--soft);
+}
 
 /* ═══════════════════════════════════
    CASE STUDY
@@ -753,8 +876,11 @@ footer {
   #projects { padding: 72px 0 72px 24px; }
   .sec-head { padding-right: 24px; }
   .drag-hint { padding-right: 24px; }
+  .project-filters { padding-right: 24px; margin: -14px 0 16px; }
   .drag-track { padding-right: 24px; }
   .proj-card-h { width: clamp(300px, 85vw, 480px); padding: 28px 24px; }
+  .card-links { flex-wrap: wrap; }
+  .arch-dialog { padding: 22px; }
 
   #case-study, #about, #thinking, #contact { padding: 72px 24px; }
   .case-grid { grid-template-columns: 1fr; }

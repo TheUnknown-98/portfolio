@@ -187,10 +187,17 @@
       </div>
     </div>
 
+    <div class="project-filters reveal" id="projectFilters">
+      <button class="filter-chip is-active" data-filter="all" type="button">All</button>
+      <button class="filter-chip" data-filter="algorithms" type="button">Algorithms</button>
+      <button class="filter-chip" data-filter="frontend" type="button">Frontend</button>
+      <button class="filter-chip" data-filter="tools" type="button">Tools</button>
+    </div>
+
     <div class="drag-outer">
       <div class="drag-track" id="dragTrack">
 
-        <article class="proj-card-h" data-idx="0">
+        <article class="proj-card-h" data-idx="0" data-category="algorithms frontend">
           <div class="card-glow"></div>
           <div class="card-h-num">01</div>
           <div class="card-h-body">
@@ -207,9 +214,11 @@
               <li>Recursive division maze generator</li>
               <li>Speed control + live compute stats</li>
             </ul>
+            <p class="project-metric">Outcome: Visualized 4 algorithms with interactive step playback.</p>
             <div class="card-h-foot">
               <span class="card-stack">HTML · CSS · JS</span>
               <div class="card-links">
+                <button class="arch-link" type="button" data-arch="pathfinder">Architecture</button>
                 <a href="https://theunknown-98.github.io/pathfinder-visualizer" target="_blank">Live ↗</a>
                 <a href="https://github.com/TheUnknown-98/pathfinder-visualizer" target="_blank">GitHub ↗</a>
               </div>
@@ -217,7 +226,7 @@
           </div>
         </article>
 
-        <article class="proj-card-h" data-idx="1">
+        <article class="proj-card-h" data-idx="1" data-category="tools frontend">
           <div class="card-glow"></div>
           <div class="card-h-num">02</div>
           <div class="card-h-body">
@@ -234,9 +243,11 @@
               <li>Psychological scoring with natural language result</li>
               <li>Zero dependencies — pure HTML, CSS, JS</li>
             </ul>
+            <p class="project-metric">Outcome: Reduced decision friction into a 3-step practical flow.</p>
             <div class="card-h-foot">
               <span class="card-stack">HTML · CSS · JS</span>
               <div class="card-links">
+                <button class="arch-link" type="button" data-arch="snap">Architecture</button>
                 <a href="https://theunknown-98.github.io/snap-decision" target="_blank">Live ↗</a>
                 <a href="https://github.com/TheUnknown-98/snap-decision" target="_blank">GitHub ↗</a>
               </div>
@@ -256,6 +267,18 @@
       </div>
     </div>
   </section>
+
+  <div class="arch-modal" id="archModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="arch-backdrop" data-close-modal="true"></div>
+    <div class="arch-dialog" role="document">
+      <button class="arch-close" id="archClose" type="button" aria-label="Close architecture modal">×</button>
+      <span class="sec-label">/ Architecture snapshot</span>
+      <h3 class="arch-title" id="archTitle"></h3>
+      <p class="arch-summary" id="archSummary"></p>
+      <div class="arch-flow" id="archFlow"></div>
+      <p class="arch-note" id="archNote"></p>
+    </div>
+  </div>
 
   <!-- ── Case Study ── -->
   <section id="case-study">
