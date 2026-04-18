@@ -9,6 +9,7 @@ let sX = window.innerWidth / 2, sY = window.innerHeight / 2;
 let tX = sX, tY = sY;
 let mVelX = 0, mVelY = 0, lastMx = sX, lastMy = sY, lastMTime = Date.now();
 let isLabMode = false;
+let mx = sX, my = sY;
 
 document.addEventListener('mousemove', e => { tX = e.clientX; tY = e.clientY; });
 
@@ -630,7 +631,6 @@ const tail = Array.from({ length: TAIL_COUNT }, (_, i) => {
   return { el, x: 0, y: 0 };
 });
 
-let mx = 0, my = 0;
 let scrolling = false;
 let scrollTimer = null;
 
