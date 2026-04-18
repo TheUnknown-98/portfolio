@@ -613,7 +613,7 @@ const tail = Array.from({ length: TAIL_COUNT }, (_, i) => {
     z-index: ${9999 - i};
     transform: translate(-50%, -50%);
     opacity: 0;
-    transition: opacity .3s ease, border-radius .2s ease, width .2s ease, height .2s ease;
+    transition: opacity .3s ease, width .2s ease, height .2s ease, background-color .2s ease;
     will-change: left, top;
     box-sizing: border-box;
   `;
@@ -651,9 +651,32 @@ const LERPS = [0.28, 0.2, 0.15, 0.11, 0.08, 0.06];
 let magneticTarget = null;
 let magRect = null;
 
+const cursorBorder = document.createElement('div');
+cursorBorder.style.cssText = `
+  position: fixed;
+  border: 1px solid #9d6fff;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 9998;
+  transition: opacity .2s ease, width .2s ease, height .2s ease, left .2s ease, top .2s ease, transform .2s ease;
+  opacity: 0;
+  box-sizing: border-box;
+  transform: scale(0.95);
+`;
+document.body.appendChild(cursorBorder);
+
 (function animTail() {
   if (magneticTarget) {
     magRect = magneticTarget.getBoundingClientRect();
+    cursorBorder.style.opacity = '1';
+    cursorBorder.style.width = magRect.width + 16 + 'px';
+    cursorBorder.style.height = magRect.height + 16 + 'px';
+    cursorBorder.style.left = magRect.left - 8 + 'px';
+    cursorBorder.style.top = magRect.top - 8 + 'px';
+    cursorBorder.style.transform = 'scale(1)';
+  } else {
+    cursorBorder.style.opacity = '0';
+    cursorBorder.style.transform = 'scale(0.95)';
   }
 
   tail.forEach((t, i) => {
@@ -663,21 +686,15 @@ let magRect = null;
       if (magneticTarget && magRect) {
         targetX = magRect.left + magRect.width / 2;
         targetY = magRect.top + magRect.height / 2;
-        t.el.style.width = magRect.width + 16 + 'px';
-        t.el.style.height = magRect.height + 16 + 'px';
-        t.el.style.borderRadius = '8px';
-        t.el.style.background = 'transparent';
-        t.el.style.border = '1px solid #9d6fff';
-        t.el.style.mixBlendMode = 'normal';
+        t.el.style.width = '14px';
+        t.el.style.height = '14px';
+        t.el.style.background = '#9d6fff';
       } else {
         targetX = mx;
         targetY = my;
         t.el.style.width = '8px';
         t.el.style.height = '8px';
-        t.el.style.borderRadius = '50%';
         t.el.style.background = 'rgba(255,255,255,1)';
-        t.el.style.border = 'none';
-        t.el.style.mixBlendMode = 'normal';
       }
     } else {
       targetX = tail[i - 1].x;
