@@ -7,6 +7,8 @@
 const spotlight = document.getElementById('spotlight');
 let sX = window.innerWidth / 2, sY = window.innerHeight / 2;
 let tX = sX, tY = sY;
+let mVelX = 0, mVelY = 0, lastMx = sX, lastMy = sY, lastMTime = Date.now();
+let isLabMode = false;
 
 document.addEventListener('mousemove', e => { tX = e.clientX; tY = e.clientY; });
 
@@ -31,8 +33,20 @@ window.addEventListener('resize', resizeTopo);
 
 // Scalar field: sum of sine waves at different frequencies + phases
 function field(x, y, t) {
-  const nx = x / topoCanvas.width;
-  const ny = y / topoCanvas.height;
+  let nx = x / topoCanvas.width;
+  let ny = y / topoCanvas.height;
+
+  // Topographic Disturbance
+  const dx = x - mx;
+  const dy = y - my;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  const maxDist = 250;
+  if (dist < maxDist && !isLabMode) {
+    const falloff = Math.pow(1 - dist / maxDist, 2);
+    nx -= (mVelX * falloff) * 0.003;
+    ny -= (mVelY * falloff) * 0.003;
+  }
+
   return (
     Math.sin(nx * 4.2 + t * 0.28)          * Math.cos(ny * 3.1 - t * 0.19) +
     Math.sin(nx * 7.8 - ny * 5.4 + t * 0.17) * 0.55 +
@@ -231,6 +245,55 @@ function drawParticles() {
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(157,111,255,.28)';
     ctx.fill();
+
+    const dx = p.x - mx;
+    const dy = p.y - my;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    
+    if (isLabMode) {
+      // Boids flocking logic
+      let avgVx = 0, avgVy = 0, count = 0;
+      for (let j = 0; j < particles.length; j++) {
+        if (particles[j] === p) continue;
+        const d = Math.sqrt((p.x - particles[j].x)**2 + (p.y - particles[j].y)**2);
+        if (d < 80) {
+          avgVx += particles[j].vx;
+          avgVy += particles[j].vy;
+          count++;
+        }
+      }
+      if (count > 0) {
+        p.vx += (avgVx / count - p.vx) * 0.05;
+        p.vy += (avgVy / count - p.vy) * 0.05;
+      }
+      if (dist < 150) {
+        p.vx += (dx / dist) * 0.4;
+        p.vy += (dy / dist) * 0.4;
+      }
+      const speed = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+      if (speed > 3) {
+        p.vx = (p.vx/speed) * 3;
+        p.vy = (p.vy/speed) * 3;
+      } else if (speed < 0.5 && speed > 0) {
+        p.vx = (p.vx/speed) * 0.5;
+        p.vy = (p.vy/speed) * 0.5;
+      }
+    } else {
+      // Normal mode: shockwave
+      if (dist < 120 && (Math.abs(mVelX) > 1 || Math.abs(mVelY) > 1)) {
+        const force = (1 - dist / 120) * 0.15;
+        p.vx += mVelX * force;
+        p.vy += mVelY * force;
+      }
+      p.vx *= 0.98;
+      p.vy *= 0.98;
+      const speed = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+      if (speed < 0.2 && speed > 0) {
+        p.vx = (p.vx/speed) * 0.2;
+        p.vy = (p.vy/speed) * 0.2;
+      }
+    }
+
     p.x += p.vx; p.y += p.vy;
     if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
     if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
@@ -290,6 +353,26 @@ function cycleWord() {
 }
 setTimeout(cycleWord, 1200);
 
+// ── Cipher / Matrix Reveal ────────────────────────────────────────
+const cipherChars = '!<>-_\\/[]{}—=+*^?#';
+document.querySelectorAll('.frag[data-text]').forEach((el, i) => {
+  const original = el.getAttribute('data-text');
+  let iter = 0;
+  setTimeout(() => {
+    const interval = setInterval(() => {
+      el.innerText = original.split('').map((letter, index) => {
+        if(index < iter) return original[index];
+        return cipherChars[Math.floor(Math.random() * cipherChars.length)];
+      }).join('');
+      iter += 1/3;
+      if(iter >= original.length){
+        clearInterval(interval);
+        el.innerText = original;
+      }
+    }, 30);
+  }, 100 + i * 150);
+});
+
 // ── Typewriter eyebrow ────────────────────────────────────────────
 const phrases = ['Full-Stack Developer', 'Algorithm Enthusiast', 'Building from scratch'];
 let pi = 0, ci = 0, deleting = false;
@@ -325,6 +408,15 @@ let lastX       = 0;
 let lastTime    = 0;
 let momentum    = null;
 
+function applyDragTransform(vel) {
+  const skew = Math.max(-15, Math.min(15, vel * 2));
+  const blur = Math.min(8, Math.abs(vel) * 1.5);
+  document.querySelectorAll('.proj-card-h').forEach(c => {
+    c.style.transform = `skewX(${skew}deg)`;
+    c.style.filter = `blur(${blur}px)`;
+  });
+}
+
 function stopMomentum() {
   if (momentum) { cancelAnimationFrame(momentum); momentum = null; }
 }
@@ -350,6 +442,8 @@ if (dragOuter) {
     velocity  = (e.pageX - lastX) / (now - lastTime || 1);
     lastX     = e.pageX;
     lastTime  = now;
+    
+    applyDragTransform(velocity);
   });
 
   window.addEventListener('mouseup', () => {
@@ -360,9 +454,13 @@ if (dragOuter) {
     // Momentum glide
     let v = -velocity * 14;
     function glide() {
-      if (Math.abs(v) < 0.5) return;
+      if (Math.abs(v) < 0.5) {
+        applyDragTransform(0);
+        return;
+      }
       dragOuter.scrollLeft += v;
       v *= 0.92;
+      applyDragTransform(v / 14);
       momentum = requestAnimationFrame(glide);
     }
     glide();
@@ -541,8 +639,18 @@ my = window.innerHeight * 0.5;
 
 document.addEventListener('pointermove', e => {
   mx = e.clientX; my = e.clientY;
+  const now = Date.now();
+  const dt = now - lastMTime || 16;
+  mVelX = (mx - lastMx) / dt;
+  mVelY = (my - lastMy) / dt;
+  lastMx = mx; lastMy = my; lastMTime = now;
+
   tail.forEach(t => t.el.style.opacity = '1');
 });
+
+setInterval(() => {
+  if (Date.now() - lastMTime > 50) { mVelX = 0; mVelY = 0; }
+}, 50);
 
 document.addEventListener('pointerleave', () => {
   tail.forEach(t => t.el.style.opacity = '0');
@@ -550,12 +658,43 @@ document.addEventListener('pointerleave', () => {
 
 // Each dot chases the one ahead of it
 const LERPS = [0.28, 0.2, 0.15, 0.11, 0.08, 0.06];
+let magneticTarget = null;
+let magRect = null;
 
 (function animTail() {
+  if (magneticTarget) {
+    magRect = magneticTarget.getBoundingClientRect();
+  }
+
   tail.forEach((t, i) => {
-    const targetX = i === 0 ? mx : tail[i - 1].x;
-    const targetY = i === 0 ? my : tail[i - 1].y;
-    const factor = scrolling ? LERPS[i] * 0.62 : LERPS[i];
+    let targetX, targetY;
+    
+    if (i === 0) {
+      if (magneticTarget && magRect) {
+        targetX = magRect.left + magRect.width / 2;
+        targetY = magRect.top + magRect.height / 2;
+        t.el.style.width = magRect.width + 16 + 'px';
+        t.el.style.height = magRect.height + 16 + 'px';
+        t.el.style.borderRadius = '8px';
+        t.el.style.background = '#fff';
+        t.el.style.mixBlendMode = 'difference';
+      } else {
+        targetX = mx;
+        targetY = my;
+        t.el.style.width = '8px';
+        t.el.style.height = '8px';
+        t.el.style.borderRadius = '50%';
+        t.el.style.background = 'rgba(255,255,255,1)';
+        t.el.style.mixBlendMode = 'normal';
+      }
+    } else {
+      targetX = tail[i - 1].x;
+      targetY = tail[i - 1].y;
+    }
+
+    const baseFactor = scrolling ? LERPS[i] * 0.62 : LERPS[i];
+    const factor = (i === 0 && magneticTarget) ? baseFactor * 1.5 : baseFactor;
+    
     t.x += (targetX - t.x) * factor;
     t.y += (targetY - t.y) * factor;
     t.el.style.left = t.x + 'px';
@@ -570,19 +709,36 @@ window.addEventListener('scroll', () => {
   scrollTimer = setTimeout(() => { scrolling = false; }, 120);
 }, { passive: true });
 
-// Grow head dot on hover
-document.querySelectorAll('a, button, .proj-card-h, .skill-pill').forEach(el => {
+// Magnetic snapping on hover
+document.querySelectorAll('a, button, .proj-card-h, .skill-pill, .frag-1, .frag-2, .frag-3, .frag-4').forEach(el => {
   el.addEventListener('mouseenter', () => {
-    tail[0].el.style.width  = '14px';
-    tail[0].el.style.height = '14px';
-    tail[0].el.style.background = 'rgba(200,170,255,1)';
+    magneticTarget = el;
   });
   el.addEventListener('mouseleave', () => {
-    tail[0].el.style.width  = '8px';
-    tail[0].el.style.height = '8px';
-    tail[0].el.style.background = 'rgba(255,255,255,1)';
+    if (magneticTarget === el) magneticTarget = null;
   });
 });
+
+// ── Boot Lab ──────────────────────────────────────────────────────
+document.querySelectorAll('.boot-lab').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    isLabMode = true;
+    document.body.classList.add('lab-mode');
+    particles.forEach(p => {
+      p.vx = (Math.random() - 0.5) * 4;
+      p.vy = (Math.random() - 0.5) * 4;
+    });
+  });
+});
+
+const exitLabBtn = document.getElementById('exitLabBtn');
+if(exitLabBtn) {
+  exitLabBtn.addEventListener('click', () => {
+    isLabMode = false;
+    document.body.classList.remove('lab-mode');
+  });
+}
 
 // ── Smooth scroll ─────────────────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a => {

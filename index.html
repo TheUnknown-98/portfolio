@@ -11,13 +11,13 @@
 </head>
 <body>
 
-  <div class="noise"></div>
-  <div class="spotlight" id="spotlight"></div>
+  <div class="noise fade-ui"></div>
+  <div class="spotlight fade-ui" id="spotlight"></div>
   <canvas id="topo-canvas"></canvas>
   <canvas id="particle-canvas"></canvas>
 
   <!-- ── Nav ── -->
-  <nav id="nav">
+  <nav id="nav" class="fade-ui">
     <span class="logo">TU<span class="logo-blink">_</span></span>
     <div class="nav-links">
       <a href="#projects">Projects</a>
@@ -27,13 +27,13 @@
   </nav>
 
   <!-- ── Hero — fragmented ── -->
-  <section id="hero">
+  <section id="hero" class="fade-ui">
 
     <!-- Fragment 1: top-left -->
-    <span class="frag frag-1">I build</span>
+    <span class="frag frag-1" data-text="I build">I build</span>
 
     <!-- Fragment 2: top-right -->
-    <span class="frag frag-2">things</span>
+    <span class="frag frag-2" data-text="things">things</span>
 
     <!-- Eyebrow: mid-left -->
     <p class="hero-eyebrow">
@@ -53,7 +53,7 @@
     </div>
 
     <!-- Fragment 3: lower-left -->
-    <span class="frag frag-3">that</span>
+    <span class="frag frag-3" data-text="that">that</span>
 
     <!-- Fragment 4: lower-right — cycling word lives here -->
     <div class="frag frag-4">
@@ -90,7 +90,7 @@
   </section>
 
   <!-- ── Marquee — 3 rows ── -->
-  <div class="marquee-wrap">
+  <div class="marquee-wrap fade-ui">
 
     <div class="marquee">
       <div class="marquee-track">
@@ -158,7 +158,7 @@
   </div>
 
   <!-- ── Performance + Quality Strip ── -->
-  <section id="quality-strip" class="reveal">
+  <section id="quality-strip" class="reveal fade-ui">
     <div class="quality-item">
       <span class="quality-n">95+</span>
       <span class="quality-l">Lighthouse Performance</span>
@@ -178,7 +178,7 @@
   </section>
 
   <!-- ── Projects — drag to browse ── -->
-  <section id="projects">
+  <section id="projects" class="fade-ui">
     <div class="sec-head reveal">
       <span class="sec-label">/ Projects</span>
       <div class="sec-head-row">
@@ -255,9 +255,36 @@
           </div>
         </article>
 
+        <article class="proj-card-h" data-idx="2" data-category="algorithms tools">
+          <div class="card-glow"></div>
+          <div class="card-h-num">03</div>
+          <div class="card-h-body">
+            <div class="card-h-top">
+              <h3 class="card-h-name">The Mirror</h3>
+              <div class="card-h-tags">
+                <span>Lab</span>
+                <span>Vanilla JS</span>
+              </div>
+            </div>
+            <p class="card-h-desc">A behavioral profiling experiment masquerading as a flocking simulation. The entity field reacts to your movement patterns, aligning or fleeing based on perceived velocity.</p>
+            <ul class="card-h-feats">
+              <li>Responsive boids flocking algorithm</li>
+              <li>Velocity-based entity alignment</li>
+              <li>Real-time canvas computation</li>
+            </ul>
+            <p class="project-metric">Outcome: An interactive, living background canvas.</p>
+            <div class="card-h-foot">
+              <span class="card-stack">HTML · JS · Canvas</span>
+              <div class="card-links">
+                <button class="boot-lab" type="button">Boot Lab</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
         <!-- More coming -->
         <article class="proj-card-h proj-card-h--soon">
-          <div class="card-h-num">03</div>
+          <div class="card-h-num">04</div>
           <div class="card-h-body card-h-body--soon">
             <p class="soon-label">building...</p>
             <p class="soon-hint">next project in progress</p>
@@ -268,7 +295,7 @@
     </div>
   </section>
 
-  <div class="arch-modal" id="archModal" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="arch-modal fade-ui" id="archModal" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="arch-backdrop" data-close-modal="true"></div>
     <div class="arch-dialog" role="document">
       <button class="arch-close" id="archClose" type="button" aria-label="Close architecture modal">×</button>
@@ -281,7 +308,7 @@
   </div>
 
   <!-- ── Case Study ── -->
-  <section id="case-study">
+  <section id="case-study" class="fade-ui">
     <div class="sec-head reveal">
       <span class="sec-label">/ Case Study</span>
       <h2 class="sec-title">Pathfinder Visualizer — from idea to shipped tool</h2>
@@ -311,7 +338,7 @@
   </section>
 
   <!-- ── About ── -->
-  <section id="about">
+  <section id="about" class="fade-ui">
     <div class="sec-head reveal">
       <span class="sec-label">/ About</span>
     </div>
@@ -336,7 +363,7 @@
   </section>
 
   <!-- ── How I Think ── -->
-  <section id="thinking">
+  <section id="thinking" class="fade-ui">
     <div class="sec-head reveal">
       <span class="sec-label">/ How I Think</span>
       <h2 class="sec-title">Principles behind my builds</h2>
@@ -358,7 +385,7 @@
   </section>
 
   <!-- ── Contact ── -->
-  <section id="contact">
+  <section id="contact" class="fade-ui">
     <div class="contact-wrap reveal">
       <div class="contact-left">
         <span class="sec-label">/ Contact</span>
@@ -380,11 +407,12 @@
   </section>
 
   <!-- ── Footer ── -->
-  <footer>
+  <footer class="fade-ui">
     <span class="foot-logo">TU_</span>
     <span class="foot-copy">Built from scratch. All rights reserved.</span>
   </footer>
 
+  <button id="exitLabBtn">Exit Lab</button>
   <script src="script.js"></script>
 </body>
 </html>

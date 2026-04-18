@@ -29,6 +29,45 @@ body {
   cursor: none;
 }
 
+body.lab-mode {
+  overflow: hidden;
+}
+
+.fade-ui {
+  transition: opacity 0.8s var(--ease);
+}
+body.lab-mode .fade-ui {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+#exitLabBtn {
+  position: fixed;
+  top: 32px;
+  right: 60px;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--soft);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: opacity 0.8s var(--ease), border-color 0.2s, background 0.2s, transform 0.2s;
+}
+body.lab-mode #exitLabBtn {
+  opacity: 1;
+  pointer-events: auto;
+}
+#exitLabBtn:hover {
+  background: var(--dim);
+  transform: translateY(-2px);
+}
+
 #topo-canvas {
   position: fixed; inset: 0;
   width: 100%; height: 100%;
@@ -442,6 +481,7 @@ a { color: inherit; text-decoration: none; }
   gap: 32px;
   flex-shrink: 0;
   transition: border-color .3s, box-shadow .3s;
+  will-change: transform, filter;
 }
 .proj-card-h:hover {
   border-color: #2a2060;
@@ -905,4 +945,9 @@ footer {
   .contact-email-pill { width: 100%; justify-content: center; }
   .contact-email-pill span { font-size: .64rem; }
   footer { padding: 28px 24px; flex-direction: column; gap: 10px; text-align: center; }
+
+  #exitLabBtn {
+    top: 24px;
+    right: 24px;
+  }
 }
