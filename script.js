@@ -37,17 +37,6 @@ function field(x, y, t) {
   let nx = x / topoCanvas.width;
   let ny = y / topoCanvas.height;
 
-  // Topographic Disturbance
-  const dx = x - mx;
-  const dy = y - my;
-  const dist = Math.sqrt(dx * dx + dy * dy);
-  const maxDist = 250;
-  if (dist < maxDist && !isLabMode) {
-    const falloff = Math.pow(1 - dist / maxDist, 2);
-    nx -= (mVelX * falloff) * 0.003;
-    ny -= (mVelY * falloff) * 0.003;
-  }
-
   return (
     Math.sin(nx * 4.2 + t * 0.28)          * Math.cos(ny * 3.1 - t * 0.19) +
     Math.sin(nx * 7.8 - ny * 5.4 + t * 0.17) * 0.55 +
@@ -624,8 +613,9 @@ const tail = Array.from({ length: TAIL_COUNT }, (_, i) => {
     z-index: ${9999 - i};
     transform: translate(-50%, -50%);
     opacity: 0;
-    transition: opacity .3s ease;
+    transition: opacity .3s ease, border-radius .2s ease, width .2s ease, height .2s ease;
     will-change: left, top;
+    box-sizing: border-box;
   `;
   document.body.appendChild(el);
   return { el, x: 0, y: 0 };
@@ -676,8 +666,9 @@ let magRect = null;
         t.el.style.width = magRect.width + 16 + 'px';
         t.el.style.height = magRect.height + 16 + 'px';
         t.el.style.borderRadius = '8px';
-        t.el.style.background = '#fff';
-        t.el.style.mixBlendMode = 'difference';
+        t.el.style.background = 'transparent';
+        t.el.style.border = '1px solid #9d6fff';
+        t.el.style.mixBlendMode = 'normal';
       } else {
         targetX = mx;
         targetY = my;
@@ -685,6 +676,7 @@ let magRect = null;
         t.el.style.height = '8px';
         t.el.style.borderRadius = '50%';
         t.el.style.background = 'rgba(255,255,255,1)';
+        t.el.style.border = 'none';
         t.el.style.mixBlendMode = 'normal';
       }
     } else {
