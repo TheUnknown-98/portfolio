@@ -121,6 +121,7 @@ a { color: inherit; text-decoration: none; }
   padding: 6px 10px 6px 14px;
   border-radius: 999px;
   overflow: hidden;
+  isolation: isolate;
   border: 1px solid rgba(193, 180, 255, 0.2);
   background: linear-gradient(
     95deg,
@@ -137,23 +138,16 @@ a { color: inherit; text-decoration: none; }
   content: "";
   position: absolute;
   inset: 0 0 0 68%;
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(95deg, rgba(255, 255, 255, 0.04) 0%, rgba(216, 207, 255, 0.12) 100%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  z-index: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0.02) 0%, rgba(216, 207, 255, 0.06) 100%);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
   pointer-events: none;
 }
 
 #nav::after {
-  content: "";
-  position: absolute;
-  right: 8px;
-  top: 5px;
-  width: 16%;
-  height: calc(100% - 10px);
-  border-radius: 999px;
-  background: radial-gradient(circle at 25% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 76%);
-  pointer-events: none;
+  content: none;
 }
 
 #nav.scrolled {
@@ -170,7 +164,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 1px;
   color: #fff;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .nav-links {
@@ -181,7 +175,7 @@ a { color: inherit; text-decoration: none; }
   flex: 1;
   min-width: 0;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .nav-links a {
@@ -211,7 +205,13 @@ a { color: inherit; text-decoration: none; }
   gap: 8px;
   white-space: nowrap;
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  padding: 2px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+  backdrop-filter: blur(20px) saturate(155%);
+  -webkit-backdrop-filter: blur(20px) saturate(155%);
 }
 
 .btn {
@@ -232,18 +232,20 @@ a { color: inherit; text-decoration: none; }
 
 .btn-outline {
   color: #fff;
-  border: 1px solid rgba(234, 226, 255, .46);
-  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(238, 231, 255, .34);
+  background: rgba(255, 255, 255, .045);
+  text-shadow: none;
 }
 
 .btn-outline:hover {
-  background: rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .08);
 }
 
 .btn-solid {
   color: #fff;
   border: 1px solid transparent;
-  background: #2a73ef;
+  background: linear-gradient(180deg, #3985ff 0%, #2a73ef 100%);
+  text-shadow: none;
 }
 
 .btn-solid:hover {
